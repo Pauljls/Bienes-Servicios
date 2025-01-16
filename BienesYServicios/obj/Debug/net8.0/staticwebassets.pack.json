@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\BienesYServicios\\BienesYServicios\\wwwroot\\images\\Logo.png",
+      "PackagePath": "staticwebassets\\images\\Logo.png"
+    },
+    {
       "Id": "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\BienesYServicios\\BienesYServicios\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

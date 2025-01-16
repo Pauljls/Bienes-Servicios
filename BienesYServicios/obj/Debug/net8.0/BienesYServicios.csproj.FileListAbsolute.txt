@@ -152,6 +152,7 @@ C:\Users\paula\OneDrive\Desktop\Workspace\Asp.net\BienesYServicios\BienesYServic
 C:\Users\paula\OneDrive\Desktop\Workspace\Asp.net\BienesYServicios\BienesYServicios\obj\Debug\net8.0\BienesYServicios.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\paula\OneDrive\Desktop\Workspace\Asp.net\BienesYServicios\BienesYServicios\obj\Debug\net8.0\BienesYServicios.RazorAssemblyInfo.cache
 C:\Users\paula\OneDrive\Desktop\Workspace\Asp.net\BienesYServicios\BienesYServicios\obj\Debug\net8.0\BienesYServicios.RazorAssemblyInfo.cs
+C:\Users\paula\OneDrive\Desktop\Workspace\Asp.net\BienesYServicios\BienesYServicios\obj\Debug\net8.0\BienesYServicios.sourcelink.json
 C:\Users\paula\OneDrive\Desktop\Workspace\Asp.net\BienesYServicios\BienesYServicios\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\paula\OneDrive\Desktop\Workspace\Asp.net\BienesYServicios\BienesYServicios\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\paula\OneDrive\Desktop\Workspace\Asp.net\BienesYServicios\BienesYServicios\obj\Debug\net8.0\staticwebassets\msbuild.BienesYServicios.Microsoft.AspNetCore.StaticWebAssets.props

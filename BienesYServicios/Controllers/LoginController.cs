@@ -23,25 +23,15 @@ namespace BienesYServicios.Controllers
             _configuration = configuration;
         }
         // GET: LoginController
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            try
-            {
-                var usuarios  = await _context.Usuarios.ToListAsync();
-                return Ok(usuarios);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            
-            }
-            
+            return View();
         }
 
         // POST: LoginController/Buscar
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<ActionResult> index([FromBody] LoginClass usuario)
+        public async Task<ActionResult> index( Login usuario)
         {
             try
             {
@@ -53,7 +43,15 @@ namespace BienesYServicios.Controllers
                     return BadRequest("Usuario no encontrado o contraseña invalida");
                 }
                 var token = GenerateJwtToken(user.Correo);
-                return Ok(new { Token = token});
+                var cookieOptions = new CookieOptions()
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    Expires = DateTime.Now.AddMinutes(120),
+                    SameSite = SameSiteMode.Strict
+                };
+                Response.Cookies.Append("SesionId", token, cookieOptions);
+                return RedirectToAction("Index", "Dashboard");
             }
             catch (Exception ex)
             {
@@ -69,12 +67,12 @@ namespace BienesYServicios.Controllers
             {
                 Usuario user = new()
                 {
-                    Nombre = "Admin",
-                    Apellidos = "Admin",
+                    Nombre = "Jose",
+                    Apellidos = "Barba",
                     Celular = "999999999",
-                    Correo = "admin@gmail.com",
-                    Contrasena = BCrypt.Net.BCrypt.HashPassword("admin1234"),
-                    RolUsuarioId = 2,
+                    Correo = "jose@gmail.com",
+                    Contrasena = BCrypt.Net.BCrypt.HashPassword("jose1234"),
+                    RolUsuarioId = 1,
                 };
                 await _context.Usuarios.AddAsync(user);
                 await _context.SaveChangesAsync();
@@ -108,19 +106,18 @@ namespace BienesYServicios.Controllers
             }
         }
 
-        private string GenerateJwtToken(string username)
+        private string GenerateJwtToken(string correo)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
             var key = jwtSettings["Key"] ?? throw new InvalidOperationException("JWT Key not found in configuration");
             var secretKey = Encoding.UTF8.GetBytes(key);
 
-            var user = _context.Usuarios
-                .Include(x => x.RolUsuario)
-                .FirstOrDefault(x => x.Correo == username);
+            var user = _context.Usuarios.Include( u => u.RolUsuario)
+                        .FirstOrDefault(u => u.Correo == correo);
 
             var claims = new[]
             {
-        new Claim(JwtRegisteredClaimNames.Sub, username),
+        new Claim(JwtRegisteredClaimNames.Sub, correo),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         new Claim("userId", user.Id.ToString()),
         new Claim("nombre", user.Nombre),

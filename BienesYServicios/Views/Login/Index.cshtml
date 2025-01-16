@@ -1,0 +1,83 @@
+﻿@{
+    
+}
+@model BienesYServicios.Models.Login
+
+<div class="row align-items-center " style="height:100vh;">
+    <!-- Sección de la ilustración -->
+    <div class="col-md-6 text-center" style="background-color: #ffffff">
+        <img src="~/images/Logo.png" alt="Illustration" class="illustration">
+    </div>
+
+    <!-- Sección del formulario -->
+    <div class="col-md-5">
+        <div class="form-section box-shadow shadow-lg">
+            <h2>Bienes y Servicios</h2>
+            <p class="text-muted">Ingrese sus datos.</p>
+            <form asp-action="index" method="post">
+                <div class="mb-3">
+                    <label for="correo" class="form-label">Correo</label>
+                    <input type="email" asp-for="correo"  id="email" class="form-control" placeholder="Correo" required>
+
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" asp-for="contraseña" id="password" class="form-control" placeholder="Contraseña" required>
+                </div>
+                <button type="submit" class="btn btn-custom w-100">Ingresar</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<style>
+
+
+    .container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .illustration {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .form-section {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .form-section h2 {
+            font-weight: bold;
+        }
+
+    .btn-custom {
+        background-color: #57c1a1;
+        color: white;
+        border: none;
+    }
+
+        .btn-custom:hover {
+            background-color: #45a789;
+        }
+
+    .form-footer {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+        .form-footer a {
+            color: #57c1a1;
+            text-decoration: none;
+        }
+
+            .form-footer a:hover {
+                text-decoration: underline;
+            }
+</style>
