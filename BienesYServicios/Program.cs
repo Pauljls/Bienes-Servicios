@@ -8,10 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-// Cambiar ASCII a UTF8
+
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? throw new InvalidOperationException("JWT Key not found in configuration"));
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<RequerimientosDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConection"))
@@ -49,6 +48,8 @@ builder.Services.AddAuthentication(options =>
         }
     };
 });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

@@ -31,33 +31,48 @@ namespace BienesYServicios.Controllers
         // POST: LoginController/Buscar
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<ActionResult> index( Login usuario)
+        public async Task<ActionResult> Index(Login usuario)
         {
             try
             {
                 var user = await _context.Usuarios
+                    .Include(u => u.RolUsuario) // Incluir relación con rol
                     .FirstOrDefaultAsync(t => t.Correo == usuario.correo);
 
-                if (user == null || !BCrypt.Net.BCrypt.Verify(usuario.contraseña, user.Contrasena))
+                // Verificar si el usuario existe
+                if (user == null)
                 {
-                    return BadRequest("Usuario no encontrado o contraseña invalida");
+                    return BadRequest("Usuario no encontrado");
                 }
-                var token = GenerateJwtToken(user.Correo);
+
+                // Verificar la contraseña con BCrypt
+                if (!BCrypt.Net.BCrypt.Verify(usuario.contraseña, user.Contrasena))
+                {
+                    return RedirectToAction("Index","Login");
+                }
+
+                // Generar el token JWT
+                var token = GenerateJwtToken(user);
+
+                // Configurar la cookie para almacenar el JWT
                 var cookieOptions = new CookieOptions()
                 {
-                    HttpOnly = true,
-                    Secure = true,
-                    Expires = DateTime.Now.AddMinutes(120),
-                    SameSite = SameSiteMode.Strict
+                    HttpOnly = true, // Evita que el cliente lea el JWT (protege contra XSS)
+                    Secure = true,   // Solo para HTTPS
+                    Expires = DateTime.UtcNow.AddMinutes(30), // Expira en 2 horas
+                    SameSite = SameSiteMode.Strict // Evita envío en requests de otros sitios
                 };
+
                 Response.Cookies.Append("SesionId", token, cookieOptions);
+
                 return RedirectToAction("Index", "Dashboard");
             }
             catch (Exception ex)
             {
-                return BadRequest(new { mensaje = ex.Data });
+                return BadRequest(new { mensaje = ex.Message });
             }
         }
+
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
@@ -106,24 +121,21 @@ namespace BienesYServicios.Controllers
             }
         }
 
-        private string GenerateJwtToken(string correo)
+        private string GenerateJwtToken(Usuario user)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
             var key = jwtSettings["Key"] ?? throw new InvalidOperationException("JWT Key not found in configuration");
             var secretKey = Encoding.UTF8.GetBytes(key);
 
-            var user = _context.Usuarios.Include( u => u.RolUsuario)
-                        .FirstOrDefault(u => u.Correo == correo);
-
-            var claims = new[]
-            {
-        new Claim(JwtRegisteredClaimNames.Sub, correo),
+            var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Correo),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim("userId", user.Id.ToString()),
-        new Claim("nombre", user.Nombre),
-        new Claim("apellidos", user.Apellidos),
-        new Claim("rol", user.RolUsuario.Nombre.ToString()),
-            };
+        new Claim(ClaimTypes.NameIdentifier,"UserId", user.Id.ToString()),
+        new Claim(ClaimTypes.Name,"Nombre", user.Nombre),
+        new Claim(ClaimTypes.Surname,"Apellidos", user.Apellidos),
+        new Claim(ClaimTypes.Role,"Rol", user.RolUsuario.Nombre) // Se almacena el rol en el token
+    };
 
             var symmetricKey = new SymmetricSecurityKey(secretKey);
             var credentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
@@ -132,12 +144,13 @@ namespace BienesYServicios.Controllers
                 issuer: jwtSettings["Issuer"] ?? throw new InvalidOperationException("JWT Issuer not found"),
                 audience: jwtSettings["Audience"] ?? throw new InvalidOperationException("JWT Audience not found"),
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.UtcNow.AddMinutes(30), // Expira en 30 minutos
                 signingCredentials: credentials
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
     }
 }
 

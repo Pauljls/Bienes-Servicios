@@ -1,24 +1,31 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BienesYServicios.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BienesYServicios.Controllers
 {
+    
     public class DashboardController : Controller
     {
+        [Authorize(Roles = "Usuario")]
         // GET: DashboardController
         public ActionResult Index()
         {
             ViewBag.nombre = User.FindFirst("nombre")?.Value;
-            ViewBag.apellido = User.FindFirst("apellido")?.Value;
+            ViewBag.apellidos = User.FindFirst("apellidos")?.Value;
             ViewBag.sub = User.FindFirst("sub")?.Value;
-            if (User.FindFirst("rol").Value == "Administrador")
-            {
-                return View("administrador");
-            }
-            else { 
+
                 return View("usuario");
-            }
+           
             
+        }
+        [Authorize(Roles = "Administrador")]
+        public ActionResult AdminPanel() {
+            ViewBag.nombre = User.FindFirst("nombre")?.Value;
+            ViewBag.apellidos = User.FindFirst("apellidos")?.Value;
+            ViewBag.sub = User.FindFirst("sub")?.Value;
+            return View("administrador");
         }
 
         // GET: DashboardController/Details/5

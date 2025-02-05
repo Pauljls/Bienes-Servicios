@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\BienesYServicios\\BienesYServicios\\BienesYServicios.csproj": {}
+    "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\Bienes-Servicios\\BienesYServicios\\BienesYServicios.csproj": {}
   },
   "projects": {
-    "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\BienesYServicios\\BienesYServicios\\BienesYServicios.csproj": {
+    "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\Bienes-Servicios\\BienesYServicios\\BienesYServicios.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\BienesYServicios\\BienesYServicios\\BienesYServicios.csproj",
+        "projectUniqueName": "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\Bienes-Servicios\\BienesYServicios\\BienesYServicios.csproj",
         "projectName": "BienesYServicios",
-        "projectPath": "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\BienesYServicios\\BienesYServicios\\BienesYServicios.csproj",
+        "projectPath": "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\Bienes-Servicios\\BienesYServicios\\BienesYServicios.csproj",
         "packagesPath": "C:\\Users\\paula\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\BienesYServicios\\BienesYServicios\\obj\\",
+        "outputPath": "C:\\Users\\paula\\OneDrive\\Desktop\\Workspace\\Asp.net\\Bienes-Servicios\\BienesYServicios\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\paula\\AppData\\Roaming\\NuGet\\NuGet.Config",

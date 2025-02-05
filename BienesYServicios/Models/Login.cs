@@ -6,7 +6,9 @@ namespace BienesYServicios.Models
     {
         [Required]
         public string correo { get; set; }
+        
         [Required]
+        
         public string contraseña { get; set; }
     }
 }

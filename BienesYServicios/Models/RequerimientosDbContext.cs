@@ -33,8 +33,6 @@ public partial class RequerimientosDbContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<CategoriasRequerimiento>(entity =>
@@ -44,10 +42,6 @@ public partial class RequerimientosDbContext : DbContext
             entity.ToTable("categoriasRequerimiento");
 
             entity.Property(e => e.Nombre).HasMaxLength(100);
-
-            entity.HasOne(d => d.IdSubcategoriaNavigation).WithMany(p => p.CategoriasRequerimientos)
-                .HasForeignKey(d => d.IdSubcategoria)
-                .HasConstraintName("FK_Categoria_Subcategoria");
         });
 
         modelBuilder.Entity<EstadosRequerimiento>(entity =>
@@ -127,13 +121,13 @@ public partial class RequerimientosDbContext : DbContext
 
             entity.ToTable("Requerimiento");
 
-            entity.HasIndex(e => e.CategoriaRequerimientoId, "IX_Requerimiento_Categoria");
+            entity.HasIndex(e => e.SubCategoriaRequerimientoId, "IX_Requerimiento_SubCategoria");
 
             entity.Property(e => e.Nombre).HasMaxLength(200);
 
-            entity.HasOne(d => d.CategoriaRequerimiento).WithMany(p => p.Requerimientos)
-                .HasForeignKey(d => d.CategoriaRequerimientoId)
-                .HasConstraintName("FK_Requerimiento_Categoria");
+            entity.HasOne(d => d.SubCategoriaRequerimiento).WithMany(p => p.Requerimientos)
+                .HasForeignKey(d => d.SubCategoriaRequerimientoId)
+                .HasConstraintName("FK_Requerimiento_SubCategoria");
         });
 
         modelBuilder.Entity<RolUsuario>(entity =>
@@ -155,6 +149,10 @@ public partial class RequerimientosDbContext : DbContext
 
             entity.Property(e => e.Codigo).HasMaxLength(20);
             entity.Property(e => e.Nombre).HasMaxLength(100);
+
+            entity.HasOne(d => d.Categoria).WithMany(p => p.SubcategoriaRequerimientos)
+                .HasForeignKey(d => d.CategoriaId)
+                .HasConstraintName("FK_Subcategoria_Categoria");
         });
 
         modelBuilder.Entity<Usuario>(entity =>

@@ -9,9 +9,5 @@ public partial class CategoriasRequerimiento
 
     public string Nombre { get; set; } = null!;
 
-    public int? IdSubcategoria { get; set; }
-
-    public virtual SubcategoriaRequerimiento? IdSubcategoriaNavigation { get; set; }
-
-    public virtual ICollection<Requerimiento> Requerimientos { get; set; } = new List<Requerimiento>();
+    public virtual ICollection<SubcategoriaRequerimiento> SubcategoriaRequerimientos { get; set; } = new List<SubcategoriaRequerimiento>();
 }

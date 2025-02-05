@@ -11,9 +11,9 @@ public partial class Requerimiento
 
     public string? Descripcion { get; set; }
 
-    public int? CategoriaRequerimientoId { get; set; }
-
-    public virtual CategoriasRequerimiento? CategoriaRequerimiento { get; set; }
+    public int? SubCategoriaRequerimientoId { get; set; }
 
     public virtual ICollection<HistorialRequerimiento> HistorialRequerimientos { get; set; } = new List<HistorialRequerimiento>();
+
+    public virtual SubcategoriaRequerimiento? SubCategoriaRequerimiento { get; set; }
 }
