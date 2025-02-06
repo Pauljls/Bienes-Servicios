@@ -65,7 +65,12 @@ namespace BienesYServicios.Controllers
 
                 Response.Cookies.Append("SesionId", token, cookieOptions);
 
+                if (user.RolUsuario.Nombre == "Administrador") {
+                    return RedirectToAction("AdminPanel", "Dashboard");
+                }
+
                 return RedirectToAction("Index", "Dashboard");
+
             }
             catch (Exception ex)
             {
@@ -131,10 +136,10 @@ namespace BienesYServicios.Controllers
     {
         new Claim(JwtRegisteredClaimNames.Sub, user.Correo),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim(ClaimTypes.NameIdentifier,"UserId", user.Id.ToString()),
-        new Claim(ClaimTypes.Name,"Nombre", user.Nombre),
-        new Claim(ClaimTypes.Surname,"Apellidos", user.Apellidos),
-        new Claim(ClaimTypes.Role,"Rol", user.RolUsuario.Nombre) // Se almacena el rol en el token
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.Name,user.Nombre),
+        new Claim(ClaimTypes.Surname, user.Apellidos),
+        new Claim(ClaimTypes.Role, user.RolUsuario.Nombre) // Se almacena el rol en el token
     };
 
             var symmetricKey = new SymmetricSecurityKey(secretKey);

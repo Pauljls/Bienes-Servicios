@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BienesYServicios.Controllers
 {
-    
+    [Authorize]
     public class DashboardController : Controller
     {
         [Authorize(Roles = "Usuario")]
@@ -17,8 +17,6 @@ namespace BienesYServicios.Controllers
             ViewBag.sub = User.FindFirst("sub")?.Value;
 
                 return View("usuario");
-           
-            
         }
         [Authorize(Roles = "Administrador")]
         public ActionResult AdminPanel() {
@@ -96,5 +94,17 @@ namespace BienesYServicios.Controllers
                 return View();
             }
         }
+
+        [Authorize]
+        public IActionResult DebugClaims()
+        {
+            var claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList();
+            return Json(claims);
+        }
+
+        public IActionResult test() {
+            return Ok(new { message = "Hola soy un test" });
+        }
+
     }
 }
