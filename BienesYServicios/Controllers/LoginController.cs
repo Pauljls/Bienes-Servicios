@@ -23,11 +23,27 @@ namespace BienesYServicios.Controllers
             _configuration = configuration;
         }
         // GET: LoginController
-        public ActionResult Index()
+        public IActionResult Index()
         {
+            // 📌 Verificar si el usuario está autenticado
+            if (User.Identity.IsAuthenticated)
+            {
+                // 📌 Extraer el rol del usuario autenticado
+                var userRole = User.FindFirstValue(ClaimTypes.Role);
+
+                if (userRole == "Administrador")
+                {
+                    return RedirectToAction("AdminPanel", "Dashboard");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Dashboard");
+                }
+            }
+
+            // Si no está autenticado, mostrar la vista de login
             return View();
         }
-
         // POST: LoginController/Buscar
         [HttpPost]
         //[ValidateAntiForgeryToken]
