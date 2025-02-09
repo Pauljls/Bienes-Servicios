@@ -1,4 +1,5 @@
 ﻿using BienesYServicios.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,17 +9,43 @@ namespace BienesYServicios.Controllers
     [Authorize]
     public class DashboardController : Controller
     {
+        private readonly ILogger<DashboardController> _logger;
+        private readonly RequerimientosDbContext _context;
+
+        public DashboardController(
+            ILogger<DashboardController> logger,
+            RequerimientosDbContext context
+            ) {
+            _logger = logger;
+            _context = context;
+        }
+        
         [Authorize(Roles = "Usuario")]
         // GET: DashboardController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.nombre = User.FindFirst("nombre")?.Value;
-            ViewBag.apellidos = User.FindFirst("apellidos")?.Value;
-            ViewBag.sub = User.FindFirst("sub")?.Value;
+            var token = Request.Cookies["SesionId"]; // 🏷 Obtener la cookie
 
-                return View("usuario");
+            if (!string.IsNullOrEmpty(token))
+            {
+                // ✅ Extraer información del usuario desde Claims
+                ViewBag.nombre = User.FindFirst("nombre")?.Value;
+                ViewBag.apellidos = User.FindFirst("apellidos")?.Value;
+                ViewBag.sub = User.FindFirst("sub")?.Value;
+
+                return View("usuario"); // 🔥 Mostrar vista del usuario
+            }
+            else
+            {
+                // 🚨 Forzar cierre de sesión y redirección si no hay cookie
+                await HttpContext.SignOutAsync();
+                return RedirectToAction("Index", "Login");
+            }
         }
+
+       
         [Authorize(Roles = "Administrador")]
+
         public ActionResult AdminPanel() {
             ViewBag.nombre = User.FindFirst("nombre")?.Value;
             ViewBag.apellidos = User.FindFirst("apellidos")?.Value;

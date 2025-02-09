@@ -25,74 +25,95 @@ namespace BienesYServicios.Controllers
         // GET: LoginController
         public IActionResult Index()
         {
-            // 📌 Verificar si el usuario está autenticado
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                // 📌 Extraer el rol del usuario autenticado
-                var userRole = User.FindFirstValue(ClaimTypes.Role);
+                // Si hay un token inválido, eliminarlo
+                if (Request.Cookies.ContainsKey("SesionId"))
+                {
+                    var token = Request.Cookies["SesionId"];
+                    var handler = new JwtSecurityTokenHandler();
 
-                if (userRole == "Administrador")
-                {
-                    return RedirectToAction("AdminPanel", "Dashboard");
+                    if (!handler.CanReadToken(token))
+                    {
+                        Response.Cookies.Delete("SesionId");
+                        return View();
+                    }
                 }
-                else
+
+                // Verificar si el usuario está autenticado
+                if (User.Identity.IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Dashboard");
+                    var userRole = User.FindFirstValue(ClaimTypes.Role);
+                    if (userRole == "Administrador")
+                    {
+                        return RedirectToAction("AdminPanel", "Dashboard");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Dashboard");
+                    }
                 }
+
+                // Si no está autenticado, mostrar la vista de login
+                return View();
             }
-
-            // Si no está autenticado, mostrar la vista de login
-            return View();
+            catch (Exception)
+            {
+                // Si hay algún error en la validación del token, eliminar la cookie
+                Response.Cookies.Delete("SesionId");
+                return View();
+            }
         }
+
         // POST: LoginController/Buscar
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(Login usuario)
         {
             try
             {
                 var user = await _context.Usuarios
-                    .Include(u => u.RolUsuario) // Incluir relación con rol
+                    .Include(u => u.RolUsuario)
                     .FirstOrDefaultAsync(t => t.Correo == usuario.correo);
 
-                // Verificar si el usuario existe
                 if (user == null)
                 {
-                    return BadRequest("Usuario no encontrado");
+                    return RedirectToAction("Index", "Login"); // ✅ Redirige en lugar de devolver BadRequest
                 }
 
-                // Verificar la contraseña con BCrypt
                 if (!BCrypt.Net.BCrypt.Verify(usuario.contraseña, user.Contrasena))
                 {
-                    return RedirectToAction("Index","Login");
+                    return RedirectToAction("Index", "Login");
                 }
 
                 // Generar el token JWT
                 var token = GenerateJwtToken(user);
 
-                // Configurar la cookie para almacenar el JWT
+                var isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+
                 var cookieOptions = new CookieOptions()
                 {
-                    HttpOnly = true, // Evita que el cliente lea el JWT (protege contra XSS)
-                    Secure = true,   // Solo para HTTPS
-                    Expires = DateTime.UtcNow.AddMinutes(30), // Expira en 2 horas
-                    SameSite = SameSiteMode.Strict // Evita envío en requests de otros sitios
+                    HttpOnly = true,
+                    Secure = !isDevelopment,  // ✅ Usa Secure=true solo en producción
+                    Expires = DateTime.UtcNow.AddMinutes(2),  // ✅ Sincroniza con la expiración del token
+                    SameSite = SameSiteMode.Strict
                 };
 
                 Response.Cookies.Append("SesionId", token, cookieOptions);
 
-                if (user.RolUsuario.Nombre == "Administrador") {
+                if (user.RolUsuario.Nombre == "Administrador")
+                {
                     return RedirectToAction("AdminPanel", "Dashboard");
                 }
 
                 return RedirectToAction("Index", "Dashboard");
-
             }
             catch (Exception ex)
             {
                 return BadRequest(new { mensaje = ex.Message });
             }
         }
+
 
 
         [HttpPost]
@@ -121,27 +142,6 @@ namespace BienesYServicios.Controllers
 
         }
 
-        // GET: LoginController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: LoginController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         private string GenerateJwtToken(Usuario user)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
@@ -165,7 +165,7 @@ namespace BienesYServicios.Controllers
                 issuer: jwtSettings["Issuer"] ?? throw new InvalidOperationException("JWT Issuer not found"),
                 audience: jwtSettings["Audience"] ?? throw new InvalidOperationException("JWT Audience not found"),
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(30), // Expira en 30 minutos
+                expires: DateTime.UtcNow.AddMinutes(2), // Expira en 30 minutos
                 signingCredentials: credentials
             );
 
