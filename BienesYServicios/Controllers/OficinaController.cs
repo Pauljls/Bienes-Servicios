@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BienesYServicios.Controllers
 {
@@ -10,10 +12,48 @@ namespace BienesYServicios.Controllers
     {
         private readonly ILogger<OficinaController> _logger;
         private readonly RequerimientosDbContext _context;
+
+
+        public OficinaController(RequerimientosDbContext context, ILogger<OficinaController> logger) { 
+            _context = context;
+            _logger = logger;
+        }
+
         // GET: OficinaController
-        public ActionResult Index()
+        [Authorize(Roles = "Usuario")]
+        public async Task<ActionResult> Index()
         {
-            return View();
+            try
+            {
+                var oficinas = _context.Oficinas.ToListAsync();
+                ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
+                ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
+                ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                return View(oficinas);
+            }
+            catch (Exception ex) {
+                return BadRequest(new { mensaje = "Ocurrio un error" });
+            }
+            
+        }
+
+        [Authorize(Roles = "Administrador")]
+        public async Task<ActionResult> ControlOficinas()
+        {
+            try
+            {
+                var oficinas = await _context.Oficinas
+                    .Include(o => o.Usuarios)
+                    .ToListAsync();
+                ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
+                ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
+                ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                return View("ControlOficinas",oficinas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = "Ocurrio un error" });
+            }
         }
 
         // GET: OficinaController/Details/5

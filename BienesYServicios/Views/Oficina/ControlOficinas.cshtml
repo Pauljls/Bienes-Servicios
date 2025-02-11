@@ -1,0 +1,179 @@
+﻿@model List<BienesYServicios.Models.Oficina>
+
+<div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 sidebar">
+        <div class="p-3 text-center">
+            <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
+            <a href="@Url.Action("CrearRequerimiento", "Requerimiento")" class="btn btn-success w-100 mb-3">
+                + Crear Requerimiento
+            </a>
+        </div>
+        <nav class="nav flex-column">
+            <a href="@Url.Action("AdminPanel","Dashboard")" class="menu-item list-group-item">Requerimientos</a>
+            <a href="@Url.Action("ControlCategoria","TipoRequerimiento")" class="menu-item list-group-item">Tipos de Requerimiento</a>
+            <a href="@Url.Action("ControlOficinas","Oficina")" class="menu-item list-group-item">Oficinas</a>
+            <a href="@Url.Action("Index", "Notificacion")" class="menu-item">Notificaciones</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="col-md-9 col-lg-10 px-4">
+        <!-- Header -->
+        <div class="header mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Oficinas</h4>
+                <div class="user-info">
+                    Bienvenido(a), Administrador, @ViewBag.nombre @ViewBag.apellidos
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content-wrapper">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-container">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Participantes</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var oficina in Model)
+                            {
+                                <tr>
+                                    <td>@oficina.Id</td>
+                                    <td>@oficina.Nombre</td>
+                                    <td>@oficina.Usuarios.Count</td>
+                                    <td>
+                                        <a href="@Url.Action("DetalleOficina", "Oficina", new { id = oficina.Id })"
+                                           class="btn btn-view">
+                                            Ver
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                @if (ViewBag.TotalPages > 1)
+                {
+                    <nav aria-label="Navegación de páginas" class="mt-4">
+                        <ul class="pagination justify-content-end">
+                            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("ControlOficinas", "Oficina", new { page = i })">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("ControlOficinas", "Oficina", new { page = ViewBag.CurrentPage + 1 })">
+                                        Siguiente
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning" role="alert">
+                    No hay oficinas registradas actualmente
+                </div>
+            }
+        </div>
+    </main>
+</div>
+
+<style>
+    :root {
+        --primary-color: #003399;
+        --secondary-color: #0d6efd;
+        --success-color: #198754;
+        --background-color: #e0e0e0;
+        --border-color: #dee2e6;
+    }
+
+    .sidebar {
+        height: 100vh;
+        background-color: white;
+        border-right: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+    }
+
+    .menu-item {
+        color: #333;
+        font-weight: 500;
+        padding: 0.75rem 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-radius: 0.25rem;
+        margin: 0.25rem 0.5rem;
+    }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+    .header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+
+    .content-wrapper {
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+
+    .table-container {
+        background-color: white;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        overflow-x: auto;
+    }
+
+    .btn-view {
+        background-color: var(--success-color);
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .btn-view:hover {
+            background-color: darken(var(--success-color), 10%);
+            color: white;
+        }
+
+    .pagination .page-link {
+        color: var(--secondary-color);
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+        color: white;
+    }
+
+    .user-info {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+</style>

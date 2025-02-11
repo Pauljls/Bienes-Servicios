@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BienesYServicios.Controllers
 {
@@ -29,9 +32,9 @@ namespace BienesYServicios.Controllers
             if (!string.IsNullOrEmpty(token))
             {
                 // ✅ Extraer información del usuario desde Claims
-                ViewBag.nombre = User.FindFirst("nombre")?.Value;
-                ViewBag.apellidos = User.FindFirst("apellidos")?.Value;
-                ViewBag.sub = User.FindFirst("sub")?.Value;
+                ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
+                ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
+                ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 return View("usuario"); // 🔥 Mostrar vista del usuario
             }
@@ -46,10 +49,12 @@ namespace BienesYServicios.Controllers
        
         [Authorize(Roles = "Administrador")]
 
-        public ActionResult AdminPanel() {
-            ViewBag.nombre = User.FindFirst("nombre")?.Value;
-            ViewBag.apellidos = User.FindFirst("apellidos")?.Value;
-            ViewBag.sub = User.FindFirst("sub")?.Value;
+        public async Task<ActionResult> AdminPanel() {
+            ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
+            ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
+            ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            ViewBag.categoria = new SelectList(await _context.CategoriasRequerimientos.ToListAsync(), "Id","Nombre");
+            ViewBag.subcategoria = new SelectList(await _context.SubcategoriaRequerimientos.ToListAsync(), "Id", "Nombre");
             return View("administrador");
         }
 

@@ -3,12 +3,14 @@
 *@
 @{
 }
+@model List<SubcategoriaRequerimiento>
+
 <div class="row" style="background-color: #003399; height: auto;">
     <!-- Sidebar -->
     <div class="col-md-3 col-lg-2 sidebar">
         <div class="p-3 text-center">
             <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
-            <button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#RequerimientoModal">+ Crear Requerimiento</button>
+            <button class="btn btn-success w-100 mb-3">+ Crear Requerimiento</button>
         </div>
         <nav class="list-group-flush">
             <a href="@Url.Action("AdminPanel","Dashboard")" class="menu-item list-group-item">Requerimientos</a>
@@ -19,11 +21,11 @@
     </div>
 
     <!-- Main Content -->
-    <main class="col-md-9 col-lg-10" >
+    <main class="col-md-9 col-lg-10">
         <!-- Header -->
         <div class="header">
             <div class="d-flex justify-content-between align-items-center">
-                <h4>Requerimientos</h4>
+                <h4>Categorias</h4>
                 <span>Bienvenido(a), Administrador, @ViewBag.nombre @ViewBag.apellidos</span>
             </div>
         </div>
@@ -31,28 +33,36 @@
         <!-- Table -->
         <div class="p-4 align-self-center">
             <div class="table-container">
-                <table class="table table-bordered table-striped table-hover">
+                <div class="py-4">
+                    <select id="categoriaSelect"
+                            class="form-select"
+                            asp-items="ViewBag.categorias"
+                            style="width: 25vw"
+                            onchange="filtrarTabla()">
+                        <option value="">Escoja una categoria</option>
+                    </select>
+                </div>
+                <table id="subcategoriasTable" class="table table-bordered table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
                             <th>ID</th>
-                            <th>Nombre del Requerimiento</th>
+                            <th>Nombre</th>
                             <th>Tipo</th>
-                            <th>Fecha de Creación</th>
-                            <th>Creado Por</th>
-                            <th>Estado</th>
                             <th>Acción</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Muebles</td>
-                            <td>Bienes</td>
-                            <td>06/01/2025</td>
-                            <td>Paul Sanchez</td>
-                            <td>En Espera</td>
-                            <td><button class="btn btn-view">Ver</button></td>
-                        </tr>
+                        @foreach (var subcat in Model)
+                        {
+                            <tr data-categoria-id="@subcat.Categoria.Id">
+                                <td>@subcat.Id</td>
+                                <td>@subcat.Nombre</td>
+                                <td>@subcat.Categoria.Nombre</td>
+                                <td>
+                                    <button class="btn btn-view">Ver</button>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -70,56 +80,6 @@
             </nav>
         </div>
     </main>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="RequerimientoModal" tabindex="-1" aria-labelledby="RequeriemintoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Requerimiento</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="col" asp-controller="" asp-action="" method="post">   
-                    <div class="row py-3">
-                        <label>Escoja una categoria</label>
-                        <div class="col">
-                            <select class="form-select" asp-items="ViewBag.categoria">
-                                <option>Seleccione una opcion</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select class="form-select" asp-items="ViewBag.subcategoria">
-                                <option>Seleccione una opcion</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class=" py-3">
-                        <label class="text-break"> 
-                            Nombre 
-                            del
-                            Requerimiento
-                        </label>
-                        <input type="text" class="form-control"/>
-                    </div>
-                    <div class=" py-3">
-                        <label class="form-label">
-                            Descripcion del 
-                            Requerimiento
-                        </label>
-                        <textarea class="form-control">
-
-                        </textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-success">Crear</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <style>
@@ -177,3 +137,25 @@
             color: white;
         }
 </style>
+
+<script>
+    // Función para filtrar la tabla según la categoría seleccionada
+    function filtrarTabla() {
+        // Obtener el valor de la categoría seleccionada
+        const categoriaSeleccionada = document.getElementById('categoriaSelect').value;
+        // Obtener todas las filas de la tabla
+        const filas = document.querySelectorAll('#subcategoriasTable tbody tr');
+
+        // Recorrer cada fila y mostrar/ocultar según el filtro
+        filas.forEach(function (fila) {
+            const mostrarFila = !categoriaSeleccionada ||
+                fila.getAttribute('data-categoria-id') === categoriaSeleccionada;
+            fila.style.display = mostrarFila ? '' : 'none';
+        });
+    }
+
+    // Ejecutar el filtro cuando la página termina de cargar
+    document.addEventListener('DOMContentLoaded', function () {
+        filtrarTabla();
+    });
+</script>

@@ -95,7 +95,7 @@ namespace BienesYServicios.Controllers
                 {
                     HttpOnly = true,
                     Secure = !isDevelopment,  // ✅ Usa Secure=true solo en producción
-                    Expires = DateTime.UtcNow.AddMinutes(2),  // ✅ Sincroniza con la expiración del token
+                    Expires = DateTime.UtcNow.AddMinutes(15),  // ✅ Sincroniza con la expiración del token
                     SameSite = SameSiteMode.Strict
                 };
 
@@ -165,7 +165,7 @@ namespace BienesYServicios.Controllers
                 issuer: jwtSettings["Issuer"] ?? throw new InvalidOperationException("JWT Issuer not found"),
                 audience: jwtSettings["Audience"] ?? throw new InvalidOperationException("JWT Audience not found"),
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(2), // Expira en 30 minutos
+                expires: DateTime.UtcNow.AddMinutes(15), // Expira en 30 minutos
                 signingCredentials: credentials
             );
 

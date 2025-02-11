@@ -8,18 +8,18 @@
     <div class="col-md-3 col-lg-2 sidebar">
         <div class="p-3 text-center">
             <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
-            <button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#RequerimientoModal">+ Crear Requerimiento</button>
+            <button class="btn btn-success w-100 mb-3">+ Crear Requerimiento</button>
         </div>
         <nav class="list-group-flush">
             <a href="@Url.Action("AdminPanel","Dashboard")" class="menu-item list-group-item">Requerimientos</a>
-            <a href="@Url.Action("ControlCategoria","TipoRequerimiento")" class="menu-item list-group-item">Tipos de Requerimiento</a>
+            <a href="#" class="menu-item list-group-item">Tipos de Requerimiento</a>
             <a href="@Url.Action("ControlOficinas","Oficina")" class="menu-item list-group-item">Oficinas</a>
             <a href="#" class="menu-item list-group-item">Notificaciones</a>
         </nav>
     </div>
 
     <!-- Main Content -->
-    <main class="col-md-9 col-lg-10" >
+    <main class="col-md-9 col-lg-10">
         <!-- Header -->
         <div class="header">
             <div class="d-flex justify-content-between align-items-center">
@@ -70,56 +70,6 @@
             </nav>
         </div>
     </main>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="RequerimientoModal" tabindex="-1" aria-labelledby="RequeriemintoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Requerimiento</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="col" asp-controller="" asp-action="" method="post">   
-                    <div class="row py-3">
-                        <label>Escoja una categoria</label>
-                        <div class="col">
-                            <select class="form-select" asp-items="ViewBag.categoria">
-                                <option>Seleccione una opcion</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select class="form-select" asp-items="ViewBag.subcategoria">
-                                <option>Seleccione una opcion</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class=" py-3">
-                        <label class="text-break"> 
-                            Nombre 
-                            del
-                            Requerimiento
-                        </label>
-                        <input type="text" class="form-control"/>
-                    </div>
-                    <div class=" py-3">
-                        <label class="form-label">
-                            Descripcion del 
-                            Requerimiento
-                        </label>
-                        <textarea class="form-control">
-
-                        </textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-success">Crear</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <style>
