@@ -25,14 +25,15 @@ namespace BienesYServicios.Controllers
         {
             try
             {
-                var oficinas = _context.Oficinas.ToListAsync();
+
+                var oficinas = await _context.Oficinas.ToListAsync();
                 ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
                 ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
                 ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 return View(oficinas);
             }
             catch (Exception ex) {
-                return BadRequest(new { mensaje = "Ocurrio un error" });
+                return BadRequest(new { Error = ex.Message});
             }
             
         }
@@ -52,7 +53,7 @@ namespace BienesYServicios.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { mensaje = "Ocurrio un error" });
+                return BadRequest(new { mensaje = ex.Message });
             }
         }
 

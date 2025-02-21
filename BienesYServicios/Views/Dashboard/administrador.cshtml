@@ -81,17 +81,17 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="col" asp-controller="" asp-action="" method="post">   
+                <form class="col" asp-controller="Dashboard" asp-action="CreateRequerimiento"  method="post" id="requerimientoForm">
                     <div class="row py-3">
-                        <label>Escoja una categoria</label>
+                        <label>Escoja una categoría</label>
                         <div class="col">
-                            <select class="form-select" asp-items="ViewBag.categoria">
-                                <option>Seleccione una opcion</option>
+                            <select id="categoriaSelect" class="form-select" asp-items="ViewBag.categorias" >
+                                <option >Seleccione una opción</option>
                             </select>
                         </div>
                         <div class="col">
-                            <select class="form-select" asp-items="ViewBag.subcategoria">
-                                <option>Seleccione una opcion</option>
+                            <select id="subcategoriaSelect" class="form-select" name="SubCategoriaRequerimientoId">
+                                <option value="">Seleccione una opción</option>
                             </select>
                         </div>
                     </div>
@@ -101,14 +101,14 @@
                             del
                             Requerimiento
                         </label>
-                        <input type="text" class="form-control"/>
+                        <input type="text" class="form-control" name="Nombre" />
                     </div>
                     <div class=" py-3">
                         <label class="form-label">
                             Descripcion del 
                             Requerimiento
                         </label>
-                        <textarea class="form-control">
+                        <textarea class="form-control" name="Descripcion">
 
                         </textarea>
                     </div>
@@ -116,7 +116,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-success">Crear</button>
+                <button type="button" class="btn btn-success" onclick="crearRequerimiento()">Crear</button>
             </div>
         </div>
     </div>
@@ -177,3 +177,34 @@
             color: white;
         }
 </style>
+
+<script>
+    $(document).ready(function () {
+        $('#categoriaSelect').change(function () {
+            var categoriaId = $(this).val();
+            var subcategoriaSelect = $('#subcategoriaSelect');
+
+            // Limpiamos el select de subcategorías
+            subcategoriaSelect.empty();
+            subcategoriaSelect.append('<option value="">Seleccione una opción</option>');
+
+            if (categoriaId) {
+                $.get('/Dashboard/ObtenerSubcategorias', { categoriaId: categoriaId }, function (data) {
+                    $.each(data, function (index, item) {
+                        subcategoriaSelect.append($('<option>', {
+                            value: item.id,
+                            text: item.nombre
+                        }));
+                    });
+                });
+            }
+        });
+    });
+
+    /*function crearRequerimiento() { 
+        const form = document.getElementById("requerimientoForm");
+        const dataform = new FormData(form);
+        const data = Object.fromEntries(dataform);
+        console.log(data);
+    }*/
+</script>

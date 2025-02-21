@@ -27,20 +27,20 @@ namespace BienesYServicios.Controllers
         // GET: DashboardController
         public async Task<IActionResult> Index()
         {
-            var token = Request.Cookies["SesionId"]; // 🏷 Obtener la cookie
+            var token = Request.Cookies["SesionId"]; //  Obtener la cookie
 
             if (!string.IsNullOrEmpty(token))
             {
-                // ✅ Extraer información del usuario desde Claims
+                //  Extraer información del usuario desde Claims
                 ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
                 ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
                 ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                return View("usuario"); // 🔥 Mostrar vista del usuario
+                return View("usuario"); //  Mostrar vista del usuario
             }
             else
             {
-                // 🚨 Forzar cierre de sesión y redirección si no hay cookie
+                //  Forzar cierre de sesión y redirección si no hay cookie
                 await HttpContext.SignOutAsync();
                 return RedirectToAction("Index", "Login");
             }
@@ -53,31 +53,82 @@ namespace BienesYServicios.Controllers
             ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
             ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
             ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            ViewBag.categoria = new SelectList(await _context.CategoriasRequerimientos.ToListAsync(), "Id","Nombre");
-            ViewBag.subcategoria = new SelectList(await _context.SubcategoriaRequerimientos.ToListAsync(), "Id", "Nombre");
+            ViewBag.categorias = new SelectList(await _context.CategoriasRequerimientos.ToListAsync(), "Id","Nombre");
+            ViewBag.subcategoria = new SelectList(
+            await _context.SubcategoriaRequerimientos.ToListAsync(),"Id","Nombre");
+
             return View("administrador");
         }
 
-        // GET: DashboardController/Details/5
-        public ActionResult Details(int id)
+        [Authorize(Roles = "Administrador")]
+        [HttpGet]
+        public async Task<IActionResult> ObtenerSubcategorias(int categoriaId)
         {
-            return View();
+            var subcategorias = await _context.SubcategoriaRequerimientos
+                .Where(s => s.CategoriaId == categoriaId)
+                .Select(s => new { s.Id, s.Nombre })
+                .ToListAsync();
+
+            return Json(subcategorias);
         }
 
-        // GET: DashboardController/Create
-        public ActionResult Create()
-        {
-            return View();
+
+        //CREACION DE ESTADOS EN REQUERIMIENTOS
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> crearEstados() {
+            EstadosRequerimiento estado = new EstadosRequerimiento()
+            {
+                Nombre = "Pendiente"
+            };
+
+            
+            EstadosRequerimiento estado1 = new EstadosRequerimiento()
+            {
+                Nombre = "Observado"
+            };
+            
+            EstadosRequerimiento estado2 = new EstadosRequerimiento()
+            {
+                Nombre = "Tramitado"
+            };
+
+            await _context.EstadosRequerimientos.AddAsync(estado);
+            await _context.EstadosRequerimientos.AddAsync(estado1);
+            await _context.EstadosRequerimientos.AddAsync(estado2);
+            await _context.SaveChangesAsync();
+
+
+            var estados = await _context.Requerimientos.ToListAsync();
+            return Json(new { 
+                mensaje = "Creacion completada" 
+            });
         }
+
 
         // POST: DashboardController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateRequerimiento(Requerimiento collection)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                Requerimiento requerimiento = new Requerimiento()
+                {
+                    SubCategoriaRequerimientoId = collection.SubCategoriaRequerimientoId,
+                    Nombre = collection.Nombre,
+                    Descripcion = collection.Descripcion
+                };
+
+                HistorialRequerimiento crearRequerimiento = new ()
+                {
+                    IdUsuario = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ,
+                    IdRequerimiento = requerimiento.Id,
+                    FechaModificacion = DateTime.Now,
+                    IdEstado =  1
+                };
+                return RedirectToAction("AdminPanel","Dashboard");
             }
             catch
             {
