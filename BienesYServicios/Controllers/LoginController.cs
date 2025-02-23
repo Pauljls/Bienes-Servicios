@@ -150,9 +150,10 @@ namespace BienesYServicios.Controllers
 
             var claims = new List<Claim>
     {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Correo),
+        
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.Email, user.Correo.ToString()),
         new Claim(ClaimTypes.Name,user.Nombre),
         new Claim(ClaimTypes.Surname, user.Apellidos),
         new Claim(ClaimTypes.Role, user.RolUsuario.Nombre) // Se almacena el rol en el token

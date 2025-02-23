@@ -46,9 +46,9 @@ namespace BienesYServicios.Controllers
             }
         }
 
-       
-        [Authorize(Roles = "Administrador")]
 
+        [Authorize(Roles = "Administrador")]
+       
         public async Task<ActionResult> AdminPanel() {
             ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
             ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
@@ -56,8 +56,11 @@ namespace BienesYServicios.Controllers
             ViewBag.categorias = new SelectList(await _context.CategoriasRequerimientos.ToListAsync(), "Id","Nombre");
             ViewBag.subcategoria = new SelectList(
             await _context.SubcategoriaRequerimientos.ToListAsync(),"Id","Nombre");
-
-            return View("administrador");
+            var requerimientos = await _context.Requerimientos
+                .Include( r => r.HistorialRequerimientos)
+                .ThenInclude( h => h.IdUsuarioNavigation)
+                .ToListAsync();
+            return View("administrador",requerimientos);
         }
 
         [Authorize(Roles = "Administrador")]
@@ -72,45 +75,10 @@ namespace BienesYServicios.Controllers
             return Json(subcategorias);
         }
 
-
-        //CREACION DE ESTADOS EN REQUERIMIENTOS
-
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> crearEstados() {
-            EstadosRequerimiento estado = new EstadosRequerimiento()
-            {
-                Nombre = "Pendiente"
-            };
-
-            
-            EstadosRequerimiento estado1 = new EstadosRequerimiento()
-            {
-                Nombre = "Observado"
-            };
-            
-            EstadosRequerimiento estado2 = new EstadosRequerimiento()
-            {
-                Nombre = "Tramitado"
-            };
-
-            await _context.EstadosRequerimientos.AddAsync(estado);
-            await _context.EstadosRequerimientos.AddAsync(estado1);
-            await _context.EstadosRequerimientos.AddAsync(estado2);
-            await _context.SaveChangesAsync();
-
-
-            var estados = await _context.Requerimientos.ToListAsync();
-            return Json(new { 
-                mensaje = "Creacion completada" 
-            });
-        }
-
-
         // POST: DashboardController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateRequerimiento(Requerimiento collection)
+        public async Task<ActionResult> CreateRequerimiento([FromForm] Requerimiento collection)
         {
             try
             {
@@ -120,26 +88,37 @@ namespace BienesYServicios.Controllers
                     Nombre = collection.Nombre,
                     Descripcion = collection.Descripcion
                 };
+                _context.Requerimientos.Add(requerimiento);
+                await _context.SaveChangesAsync();
 
-                HistorialRequerimiento crearRequerimiento = new ()
+                // Verifica que el ID del requerimiento se ha generado correctamente
+                if (requerimiento.Id <= 0)
                 {
-                    IdUsuario = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ,
+                    throw new Exception("El ID del requerimiento no se generó correctamente");
+                }
+
+                HistorialRequerimiento crearRequerimiento = new()
+                {
+                    IdUsuario = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),
                     IdRequerimiento = requerimiento.Id,
                     FechaModificacion = DateTime.Now,
-                    IdEstado =  1
+                    IdEstado = 1
                 };
-                return RedirectToAction("AdminPanel","Dashboard");
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: DashboardController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
+                _context.HistorialRequerimientos.Add(crearRequerimiento);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("AdminPanel", "Dashboard");
+            }
+            catch (Exception ex)
+            {
+                // Registra el error en consola o en un log
+                Console.WriteLine($"Error al crear requerimiento: {ex.Message}");
+                // También puedes pasar el error a la vista para mostrarlo
+                TempData["ErrorMessage"] = $"Error al crear requerimiento: {ex.Message}";
+
+                return RedirectToAction("AdminPanel", "Dashboard");
+            }
         }
 
         // POST: DashboardController/Edit/5
@@ -157,15 +136,9 @@ namespace BienesYServicios.Controllers
             }
         }
 
-        // GET: DashboardController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
         // POST: DashboardController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
