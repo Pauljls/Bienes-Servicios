@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BienesYServicios.Models;
 
@@ -20,7 +21,7 @@ public partial class HistorialRequerimiento
     public virtual EstadosRequerimiento IdEstadoNavigation { get; set; } = null!;
 
     public virtual Requerimiento IdRequerimientoNavigation { get; set; } = null!;
-
+    
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
 
     public virtual Presupuesto? Presupuesto { get; set; }

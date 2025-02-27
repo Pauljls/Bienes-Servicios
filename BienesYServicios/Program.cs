@@ -16,6 +16,8 @@ builder.Services.AddDbContext<RequerimientosDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConection"))
     );
 
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -60,6 +62,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Usuario", policy => policy.RequireRole("Usuario"));
     options.AddPolicy("Administrador", policy => policy.RequireRole("Administrador"));
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

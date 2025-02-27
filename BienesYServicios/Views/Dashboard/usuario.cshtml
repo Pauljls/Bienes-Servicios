@@ -3,127 +3,188 @@
 *@
 @{
 }
-<div class="row" style="background-color: #003399; height: auto;">
-    <!-- Sidebar -->
-    <div class="col-md-3 col-lg-2 sidebar">
-        <div class="p-3 text-center">
-            <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
-            <button class="btn btn-success w-100 mb-3">+ Crear Requerimiento</button>
-        </div>
-        <nav class="list-group-flush">
-            <a href="#" class="menu-item  list-group-item">Requerimientos</a>
-            <a href="#" class="menu-item list-group-item">Tipos de Requerimiento</a>
-            <a href="#" class="menu-item list-group-item">Oficinas</a>
-            <a href="#" class="menu-item list-group-item">Notificaciones</a>
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<BienesYServicios.Models.Requerimiento>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar bg-dark text-white">
+            <div class="text-center py-4">
+                <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
+                <button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#RequerimientoModal">+ Crear Requerimiento</button>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="@Url.Action("AdminPanel","Dashboard")" class="nav-link text-white">Requerimientos</a></li>
+                <li class="nav-item"><a href="@Url.Action("ControlCategoria","TipoRequerimiento")" class="nav-link text-white">Tipos de Requerimiento</a></li>
+                <li class="nav-item"><a href="@Url.Action("ControlOficinas","Oficina")" class="nav-link text-white">Oficinas</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-white">Notificaciones</a></li>
+            </ul>
         </nav>
+
+        <!-- Main Content -->
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between align-items-center py-3">
+                <h4 class="fw-bold">Requerimientos</h4>
+                <span>Bienvenido(a), Administrador, @ViewBag.nombre @ViewBag.apellidos</span>
+            </div>
+
+            <!-- Table -->
+            <div class="card shadow-sm p-3 bg-white rounded">
+                @if (Model.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre del Requerimiento</th>
+                                    <th>Tipo</th>
+                                    <th>Fecha de Creación</th>
+                                    <th>Creado Por</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var requerimiento in Model)
+                                {
+                                    var ultimoHistorial = requerimiento?.HistorialRequerimientos?.LastOrDefault();
+                                    var fechaModificacion = ultimoHistorial?.FechaModificacion.ToString("dd/MM/yyyy") ?? "Sin historial";
+                                    var estado = ultimoHistorial?.IdEstadoNavigation?.Nombre ?? "Sin estado";
+                                    var usuario = ultimoHistorial?.IdUsuarioNavigation;
+                                    var nombreUsuario = usuario != null ? $"{usuario.Nombre} {usuario.Apellidos}" : "Desconocido";
+                                    <tr>
+                                        <td>@requerimiento.Id</td>
+                                        <td>@requerimiento?.SubCategoriaRequerimiento?.Nombre</td>
+                                        <td>@requerimiento?.SubCategoriaRequerimiento?.Categoria?.Nombre</td>
+                                        <td>@fechaModificacion</td>
+                                        <td>@nombreUsuario</td>
+                                        <td><span class="badge bg-warning text-dark">@estado</span></td>
+                                        <td>
+                                            <a href="@Url.Action("verRequerimiento","Requerimientos", new { id = requerimiento?.Id })" class="btn btn-sm btn-primary">Ver</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Paginación alineada a la derecha -->
+                    <div class="d-flex justify-content-end mt-3">
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+                                 new PagedListRenderOptions
+                    {
+                        LiElementClasses = new[] { "page-item" },
+                        PageClasses = new[] { "page-link" }
+                    })
+                    </div>
+
+                }
+            </div>
+        </div>
     </div>
+</div>
 
-    <!-- Main Content -->
-    <main class="col-md-9 col-lg-10" >
-        <!-- Header -->
-        <div class="header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h4>Requerimientos</h4>
-                <span>Bienvenido(a), Usuario, @ViewBag.apellidos</span>
+<!-- Modal -->
+
+<div class="modal fade" id="RequerimientoModal" tabindex="-1" aria-labelledby="RequeriemintoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Requerimiento</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="col" asp-action="CreateRequerimiento" method="post" id="requerimientoForm">
+                    @Html.AntiForgeryToken()
+                    <div class="row py-3">
+                        <label>Escoja una categoría</label>
+                        <div class="col">
+                            <select id="categoriaSelect" class="form-select" asp-items="ViewBag.categorias" required>
+                                <option>Seleccione una opción</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select id="subcategoriaSelect" class="form-select" name="SubCategoriaRequerimientoId" required>
+                                <option value="">Seleccione una opción</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class=" py-3">
+                        <label class="text-break">
+                            Nombre
+                            del
+                            Requerimiento
+                        </label>
+                        <input type="text" class="form-control" name="Nombre" required />
+                    </div>
+                    <div class=" py-3">
+                        <label class="form-label">
+                            Descripcion del
+                            Requerimiento
+                        </label>
+                        <textarea class="form-control" name="Descripcion" required>
+
+                        </textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-success" form="requerimientoForm">Crear</button>
             </div>
         </div>
-
-        <!-- Table -->
-        <div class="p-4 align-self-center">
-            <div class="table-container">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre del Requerimiento</th>
-                            <th>Tipo</th>
-                            <th>Fecha de Creación</th>
-                            <th>Creado Por</th>
-                            <th>Estado</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Muebles</td>
-                            <td>Bienes</td>
-                            <td>06/01/2025</td>
-                            <td>Paul Sanchez</td>
-                            <td>En Espera</td>
-                            <td><button class="btn btn-view">Ver</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <nav aria-label="Page navigation example" class="mt-3">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                </ul>
-            </nav>
-        </div>
-    </main>
+    </div>
 </div>
 
 <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container-fluid {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
 
     .sidebar {
-        height: 100vh;
-        background-color: #ffffff;
-        border-right: 2px solid #e0e0e0;
+        min-height: 100vh;
+        padding: 20px;
     }
 
-    .menu-item {
-        color: #333;
-        font-weight: bold;
-        padding: 10px 15px;
+    .nav-link {
+        font-size: 1rem;
+        padding: 10px;
+        display: block;
     }
 
-        .menu-item.active {
-            background-color: #0d6efd;
-            color: white;
-        }
-
-        .menu-item:hover {
-            background-color: #e0e0e0;
-        }
-
-    .header {
-        background-color: #003399;
-        color: white;
-        padding: 10px 20px;
+    .card {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-
-    .table-container {
-        background-color: #e0e0e0;
-        border-radius: 5px;
-        padding: 15px;
-    }
-
-    .btn-view {
-        background-color: green;
-        color: white;
-        font-weight: bold;
-    }
-
-        .btn-view:hover {
-            background-color: darkgreen;
-            color:#ffffff
-        }
-
-    .pagination .page-link {
-        color: #0d6efd;
-    }
-
-        .pagination .page-link:hover {
-            background-color: #0d6efd;
-            color: white;
-        }
 </style>
+<script>
+        $(document).ready(function () {
+        $('#categoriaSelect').change(function () {
+            var categoriaId = $(this).val();
+            var subcategoriaSelect = $('#subcategoriaSelect');
+
+        subcategoriaSelect.empty().append('<option value="">Seleccione una opción</option>');
+
+        if (categoriaId) {
+            $.get('/Dashboard/ObtenerSubcategoriasUser', { categoriaId: categoriaId }, function (data) {
+                    $.each(data, function (index, item) {
+                    subcategoriaSelect.append($('<option>', {
+                        value: item.id,
+                        text: item.nombre
+                        }));
+                });
+            });
+            }
+        });
+    });
+</script>

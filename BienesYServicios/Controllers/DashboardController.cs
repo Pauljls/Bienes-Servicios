@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using X.PagedList;
+using X.PagedList.Extensions;
+using X.PagedList.Mvc.Core;
+
 
 namespace BienesYServicios.Controllers
 {
@@ -25,7 +29,7 @@ namespace BienesYServicios.Controllers
         
         [Authorize(Roles = "Usuario")]
         // GET: DashboardController
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var token = Request.Cookies["SesionId"]; //  Obtener la cookie
 
@@ -35,8 +39,22 @@ namespace BienesYServicios.Controllers
                 ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
                 ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
                 ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                ViewBag.categorias = new SelectList(await _context.CategoriasRequerimientos.ToListAsync(), "Id", "Nombre");
+                ViewBag.subcategoria = new SelectList(
+                await _context.SubcategoriaRequerimientos.ToListAsync(), "Id", "Nombre");
+                int pageSize = 6;
+                int pageNumber = (page ?? 1);
+                var requerimientos = _context.Requerimientos
+                    .Include(r => r.SubCategoriaRequerimiento)
+                        .ThenInclude(s => s.Categoria)
+                    .Include(r => r.HistorialRequerimientos)
+                        .ThenInclude(h => h.IdUsuarioNavigation)
+                    .Include(r => r.HistorialRequerimientos)
+                        .ThenInclude(h => h.IdEstadoNavigation)
+                    .OrderBy(r => r.Id)
+                    .ToPagedList(pageNumber, pageSize);
 
-                return View("usuario"); //  Mostrar vista del usuario
+                return View("usuario",requerimientos); //  Mostrar vista del usuario
             }
             else
             {
@@ -49,21 +67,28 @@ namespace BienesYServicios.Controllers
 
         [Authorize(Roles = "Administrador")]
        
-        public async Task<ActionResult> AdminPanel() {
+        public async Task<ActionResult> AdminPanel(int? page) {
+
             ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
             ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
             ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             ViewBag.categorias = new SelectList(await _context.CategoriasRequerimientos.ToListAsync(), "Id","Nombre");
             ViewBag.subcategoria = new SelectList(
             await _context.SubcategoriaRequerimientos.ToListAsync(),"Id","Nombre");
-            var requerimientos = await _context.Requerimientos
-                .Include( r => r.HistorialRequerimientos)
-                .ThenInclude( h => h.IdUsuarioNavigation)
-                .ToListAsync();
+            int pageSize = 6;
+            int pageNumber = (page ?? 1);
+            var requerimientos = _context.Requerimientos
+                .Include(r => r.SubCategoriaRequerimiento)
+                    .ThenInclude(s => s.Categoria)
+                .Include(r => r.HistorialRequerimientos)
+                    .ThenInclude(h => h.IdUsuarioNavigation)
+                .Include(r => r.HistorialRequerimientos)
+                    .ThenInclude(h => h.IdEstadoNavigation)
+                .OrderBy(r => r.Id)
+                .ToPagedList(pageNumber, pageSize);
             return View("administrador",requerimientos);
         }
 
-        [Authorize(Roles = "Administrador")]
         [HttpGet]
         public async Task<IActionResult> ObtenerSubcategorias(int categoriaId)
         {
@@ -120,7 +145,6 @@ namespace BienesYServicios.Controllers
                 return RedirectToAction("AdminPanel", "Dashboard");
             }
         }
-
         // POST: DashboardController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]

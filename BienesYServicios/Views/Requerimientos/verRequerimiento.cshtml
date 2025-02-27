@@ -1,0 +1,272 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var primerHistorial = Model?.HistorialRequerimientos?.FirstOrDefault();
+    var creador = primerHistorial?.IdUsuarioNavigation;
+    var ultimaModificacion = Model?.HistorialRequerimientos?.LastOrDefault();
+    var ultimoEditor = Model?.HistorialRequerimientos?.LastOrDefault()?.IdUsuarioNavigation;
+}
+@model Requerimiento
+
+<div class="d-flex flex-column flex-md-row">
+    <!-- Sidebar -->
+    <nav class="col-md-3 col-lg-2 d-md-block sidebar bg-dark text-white">
+        <div class="text-center py-4">
+            <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
+            <button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#RequerimientoModal">+ Crear Requerimiento</button>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="@Url.Action("AdminPanel","Dashboard")" class="nav-link text-white">📌 Requerimientos</a></li>
+            <li class="nav-item"><a href="@Url.Action("ControlCategoria","TipoRequerimiento")" class="nav-link text-white">📂 Tipos de Requerimiento</a></li>
+            <li class="nav-item"><a href="@Url.Action("ControlOficinas","Oficina")" class="nav-link text-white">🏢 Oficinas</a></li>
+            <li class="nav-item"><a href="#" class="nav-link text-white">🔔 Notificaciones</a></li>
+        </ul>
+    </nav>
+    
+
+    <!-- Contenido de la Vista -->
+    <div class="container-fluid mt-4">
+        <div class="card shadow-lg p-4">
+            <h3 class="mb-4 text-center text-primary">📋 Detalles del Requerimiento</h3>
+
+            <!-- Información General -->
+            <div class="row text-center mb-3 fw-bold">
+                <div class="col">NOMBRE DEL REQUERIMIENTO</div>
+                <div class="col">TIPO</div>
+                <div class="col">FECHA DE CREACIÓN</div>
+            </div>
+            <div class="row text-center border-top pt-2">
+                <div class="col">@Model?.Nombre</div>
+                <div class="col">@Model?.SubCategoriaRequerimiento?.Nombre</div>
+                <div class="col">@primerHistorial?.FechaModificacion.ToString("dd/MM/yy")</div>
+            </div>
+
+            <!-- Creado Por y Estado -->
+            <div class="row text-center mt-4 fw-bold">
+                <div class="col">CREADO POR</div>
+                <div class="col">ESTADO</div>
+            </div>
+            <div class="row text-center border-top pt-2">
+                <div class="col">@Model?.HistorialRequerimientos?.FirstOrDefault()?.IdUsuarioNavigation?.Nombre
+                    @Model?.HistorialRequerimientos?.FirstOrDefault()?.IdUsuarioNavigation?.Apellidos</div>
+                <div class="col">
+                    <span class="badge bg-warning text-dark">@Model?.HistorialRequerimientos?.LastOrDefault()?.IdEstadoNavigation.Nombre</span>
+                </div>
+            </div>
+
+            <!-- Responsables -->
+            @if (Model?.HistorialRequerimientos?.Count > 1)
+            {
+                <div class="row text-center mt-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm p-3">
+                            <strong>🧑‍💼 Responsable</strong><br>
+                            <span class="fw-bold">
+                                @creador?.Nombre
+                                @creador?.Apellidos
+                            </span><br>
+                            @creador?.Oficina?.Nombre
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card shadow-sm p-3">
+                            <strong>🧑‍💼 Responsable</strong><br>
+                            <span class="fw-bold">
+                                @ultimoEditor?.Nombre
+                                @ultimoEditor?.Apellidos
+                            </span><br>
+                            @ultimoEditor?.Oficina?.Nombre
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Oficinas -->
+                <div class="d-flex justify-content-center mt-4">
+                    <button class="btn btn-outline-primary me-3 shadow-sm">🏢 Oficina 1</button>
+                    <button class="btn btn-outline-primary shadow-sm">🏢 Oficina 2</button>
+                </div>
+
+            }
+            else
+            {
+                <div class="row text-center mt-4 d-flex justify-content-center ">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm p-3">
+                            <strong>🧑‍💼 Responsable</strong><br>
+                            <span class="fw-bold">
+                                @creador?.Nombre
+                                @creador?.Apellidos
+                            </span><br>
+                            @if (creador?.Oficina is null)
+                            {
+                                <p>NO HAY OFICINA</p>
+                            }
+                            @creador?.Oficina?.Nombre
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Oficinas -->
+                <div class="d-flex justify-content-center mt-4">
+                    <button class="btn btn-outline-primary me-3 shadow-sm">🏢 Oficina 1
+                        
+                    </button>
+                    
+                </div>
+            }
+
+            <h4 class="mt-5 text-center">
+                Editar Estado
+            </h4>
+
+            <h5 class="mt-1 text-center">
+                Presione cualquier boton para editar el estado
+            </h5>
+
+            <!-- Estado del Trámite -->
+
+            <form id="formHistorial">
+                <div class="text-center my-4 gap-3">
+                    <input type="number" hidden name="IdRequerimiento" value="@Model?.Id" />
+
+                    <button  type="button" id="Tramitado" class="badge btn bg-success px-3 py-2 fs-6"   
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z" />
+                        </svg>
+                        Tramitado
+                    </button>
+                    <button id="Denegado" type="button" class="badge btn bg-danger px-3 py-2 fs-6 text-white"  data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass-bottom" viewBox="0 0 16 16">
+                            <path d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5m2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702s.18.149.5.149.5-.15.5-.15v-.7c0-.701.478-1.236 1.011-1.492A3.5 3.5 0 0 0 11.5 3V2z" />
+                        </svg>
+                        Denegado
+                    </button>
+                    <button type="button" id="Observado" class="badge btn btn-primary px-3 py-2 fs-6" 
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+                        </svg>
+                        Observado
+                    </button>
+                </div>
+            </form>
+
+            <!-- Niveles del Trámite -->
+            <div class="row text-center mt-4">
+                <div class="col">
+                    <span class="badge bg-primary p-2">DGA</span><br>Primer Nivel
+                </div>
+                <div class="col">
+                    <span class="badge bg-primary p-2">Abastecimiento</span><br>Segundo Nivel
+                </div>
+                <div class="col">
+                    <span class="badge bg-primary p-2">Especialista</span><br>Tercer Nivel
+                </div>
+                <div class="col">
+                    <span class="badge bg-primary p-2">Cotizaciones</span><br>Cuarto Nivel
+                </div>
+            </div>
+
+            <!-- Presupuesto -->
+            <div class="row mt-5">
+                <div class="col text-center">
+                    <h5 class="fw-bold text-success">💰 Presupuesto</h5>
+                    <div class="card shadow-sm p-3">
+                        <p class="mb-1">Valor Referencial: <strong class="text-primary">$</strong></p>
+                        <p class="mb-0">Divisa: <strong class="text-success"></strong></p>
+                    </div>
+                    <button type="button" class="btn btn-success my-5">Agregar Presupuesto</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Alerta</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Esta seguro que quiere realizar esta accion
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="historial()">Continuar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .sidebar {
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .nav-link {
+        font-size: 1rem;
+        padding: 10px;
+        display: block;
+    }
+</style>
+<script>
+    let selectedEstadoId;
+
+    $(document).ready(() => {
+        $("#Denegado, #Tramitado, #Observado").click(function () {
+            // Guardar el ID del estado seleccionado
+            if (this.id === "Denegado") selectedEstadoId = 4;
+            else if (this.id === "Tramitado") selectedEstadoId = 3;
+            else if (this.id === "Observado") selectedEstadoId = 2;
+        });
+    });
+
+
+    function historial() {
+        const idRequerimiento = document.querySelector("[name='IdRequerimiento']").value;
+
+        const datos = {
+            IdEstado: selectedEstadoId,  // Ya es un número
+            IdRequerimiento: parseInt(idRequerimiento) // Asegurar conversión a número
+        };
+
+        console.log("Datos a enviar:", datos);
+
+        if (!datos.IdEstado || !datos.IdRequerimiento) {
+            alert("Error: Datos incompletos o inválidos");
+            return;
+        }
+
+        $.ajax({
+            url: '/Requerimientos/Create',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(datos),  // Serializar correctamente
+            success: function (result) {
+                alert("Nuevo registro creado con éxito");
+                $('#exampleModal').modal('hide');
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error("Error en la petición AJAX:", error);
+                console.log("Respuesta del servidor:", xhr.responseText);
+                alert("Error al enviar los datos. Consulta la consola para más detalles.");
+            }
+        });
+    }
+
+    
+</script>
