@@ -9,26 +9,136 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
-    <nav class="col-md-3 col-lg-2 d-md-block sidebar bg-dark text-white">
-        <div class="text-center py-4">
-            <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
-            <button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#RequerimientoModal">+ Crear Requerimiento</button>
-        </div>
-        <ul class="nav flex-column">
-            <li class="nav-item"><a href="@Url.Action("AdminPanel","Dashboard")" class="nav-link text-white">📌 Requerimientos</a></li>
-            <li class="nav-item"><a href="@Url.Action("ControlCategoria","TipoRequerimiento")" class="nav-link text-white">📂 Tipos de Requerimiento</a></li>
-            <li class="nav-item"><a href="@Url.Action("ControlOficinas","Oficina")" class="nav-link text-white">🏢 Oficinas</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-white">🔔 Notificaciones</a></li>
-        </ul>
-    </nav>
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar bg-dark text-white">
+            <div class="text-center py-4">
+                <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
+                <button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#RequerimientoModal">
+                    + Crear Requerimiento
+                </button>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="@Url.Action("AdminPanel","Dashboard")" class="nav-link text-white active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+                        </svg>
+                    Requerimientos</a></li>
+                <li class="nav-item"><a href="@Url.Action("ControlCategoria","TipoRequerimiento")" class="nav-link text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-paper" viewBox="0 0 16 16">
+                            <path d="M4 0a2 2 0 0 0-2 2v1.133l-.941.502A2 2 0 0 0 0 5.4V14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5.4a2 2 0 0 0-1.059-1.765L14 3.133V2a2 2 0 0 0-2-2zm10 4.267.47.25A1 1 0 0 1 15 5.4v.817l-1 .6zm-1 3.15-3.75 2.25L8 8.917l-1.25.75L3 7.417V2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1zm-11-.6-1-.6V5.4a1 1 0 0 1 .53-.882L2 4.267zm13 .566v5.734l-4.778-2.867zm-.035 6.88A1 1 0 0 1 14 15H2a1 1 0 0 1-.965-.738L8 10.083zM1 13.116V7.383l4.778 2.867L1 13.117Z" />
+                        </svg>
+                    Tipos de Requerimiento</a></li>
+                <li class="nav-item"><a href="@Url.Action("ControlOficinas","Oficina")" class="nav-link text-white ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+                            <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z" />
+                            <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z" />
+                        </svg>
+                    Oficinas</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
+                        </svg>
+
+                    Notificaciones</a></li>
+                <li class="nav-item"><a href="@Url.Action("Logout", "Login")" class="nav-link text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
+                            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
+                        </svg>
+                    Cerrar Sesion</a></li>
+            </ul>
+        </nav>
 
         <!-- Main Content -->
         <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between align-items-center py-3">
-                <h4 class="fw-bold">Requerimientos</h4>
-                <span>Bienvenido(a), Administrador, @ViewBag.nombre @ViewBag.apellidos</span>
-            </div>
+            @if (ViewBag.rol == "Administrador")
+            {
 
+                <div class="d-flex justify-content-between align-items-center py-3">
+                    <h4 class="fw-bold">Requerimientos</h4>
+                    <span>Bienvenido(a), Administrador, @ViewBag.nombre @ViewBag.apellidos</span>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex justify-content-between align-items-center py-3">
+                    <h4 class="fw-bold">Requerimientos</h4>
+                    <span>Bienvenido(a), Usuario, @ViewBag.nombre @ViewBag.apellidos</span>
+                </div>
+            }
+            <div class="container mt-4">
+                <div class="row g-3">
+                    <!-- Barra de búsqueda -->
+                    <div class="col-lg-4 col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text border-end-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                </svg>
+                            </span>
+                            <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Buscar por ID o nombre..." aria-label="Buscar">
+                        </div>
+                    </div>
+
+                    <!-- Filtro de estado -->
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        <div class="input-group">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-filter-type="estado">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" />
+                                </svg>
+                                Estado: Todos
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" data-value="todos">Todos</a></li>
+                                <li><a class="dropdown-item" href="#" data-value="activo">Activo</a></li>
+                                <li><a class="dropdown-item" href="#" data-value="inactivo">Inactivo</a></li>
+                                <li><a class="dropdown-item" href="#" data-value="pendiente">Pendiente</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Filtro de tipo -->
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        <div class="input-group">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-filter-type="tipo">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" />
+                                </svg>
+                                Tipo: Todos
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" data-value="todos">Todos</a></li>
+                                <li><a class="dropdown-item" href="#" data-value="tipo1">Bien</a></li>
+                                <li><a class="dropdown-item" href="#" data-value="tipo2">Servicio</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Selector de fecha inicial -->
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                                </svg>
+                            </span>
+                            <input type="date" id="fechaInicio" class="form-control" aria-label="Fecha inicial">
+                        </div>
+                    </div>
+
+                    <!-- Selector de fecha final -->
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                                </svg>
+                            </span>
+                            <input type="date" id="fechaFin" class="form-control" aria-label="Fecha final">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Table -->
             <div class="card shadow-sm p-3 bg-white rounded">
                 @if (Model.Any())
@@ -49,21 +159,36 @@
                                 <tbody>
                                     @foreach (var requerimiento in Model)
                                         {
+                                            var primerHistoriial = requerimiento?.HistorialRequerimientos.FirstOrDefault();
+                                            var creador = primerHistoriial?.IdUsuarioNavigation;
                                             var ultimoHistorial = requerimiento?.HistorialRequerimientos?.LastOrDefault();
                                             var fechaModificacion = ultimoHistorial?.FechaModificacion.ToString("dd/MM/yyyy") ?? "Sin historial";
                                             var estado = ultimoHistorial?.IdEstadoNavigation?.Nombre ?? "Sin estado";
                                             var usuario = ultimoHistorial?.IdUsuarioNavigation;
-                                            var nombreUsuario = usuario != null ? $"{usuario.Nombre} {usuario.Apellidos}" : "Desconocido";
+                                            
                                             <tr>
                                                 <td>@requerimiento?.Id</td>
                                                 <td>@requerimiento?.Nombre</td>
                                                 <td>@requerimiento?.SubCategoriaRequerimiento?.Categoria?.Nombre</td>
                                                 <td>@fechaModificacion</td>
-                                                <td>@nombreUsuario</td>
-                                                <td><span class="badge bg-warning text-dark">@estado</span></td>
-                                                <td>
-                                                    <a href="@Url.Action("verRequerimiento","Requerimientos", new { id = requerimiento?.Id })" class="btn btn-sm btn-primary">Ver</a>
-                                                </td>
+                                                <td>@creador?.Nombre @creador?.Apellidos</td>
+                                        <td><span class="badge bg-warning text-dark estadocontainer">@estado</span></td>
+                                                <td class="d-flex justify-content-between">
+                                                    <a href="@Url.Action("verRequerimiento","Requerimientos", new { id = requerimiento?.Id })" class="btn btn-sm btn-primary">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                                                </svg>
+                                                </a>
+
+                                            @if (ViewBag.Rol == "Administrador")
+                                            {
+                                                <button class="btn bg-danger text-white" data-bs-toggle="modal" data-bs-target="#eliminarRequerimiento">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                                                    </svg>
+                                                </button>
+                                            }
+                                        </td>
                                             </tr>
                                         }
                                 </tbody>
@@ -138,6 +263,32 @@
     </div>
 </div>
 
+<!-- Modal Eliminar-->
+<div class="modal fade" id="eliminarRequerimiento" tabindex="-1" aria-labelledby="eliminarRequerimiento" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z" />
+                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                </svg>
+                <h1 class="modal-title fs-5 px-3" id="exampleModalLabel">
+                    Advertencia
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                Esta seguro que desea continuar ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Regresar</button>
+                <button type="button" class="btn btn-danger">Continuar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     html, body {
         height: 100%;
@@ -156,35 +307,212 @@
         padding: 20px;
     }
 
-    .nav-link {
-        font-size: 1rem;
-        padding: 10px;
-        display: block;
-    }
+        .sidebar .nav-link {
+            color: white;
+            padding: 10px;
+            display: block;
+            transition: background 0.3s ease-in-out;
+        }
+
+            .sidebar .nav-link:hover {
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 5px;
+            }
+
+            .sidebar .nav-link.active {
+                background: rgba(0, 123, 255, 0.5); /* Color más destacado para la opción activa */
+                font-weight: bold;
+                border-radius: 5px;
+            }
+
+
 
     .card {
         border: none;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
+    <!--CODIGO CSS PARA FILTRO-->
+
+    .form-control:focus, .form-select:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+
+    .btn-outline-secondary {
+        background-color: white;
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+            color: #212529;
+        }
+
+    .input-group-text {
+        background-color: white;
+    }
+
 </style>
 <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
+        // Configuración inicial para manejo de categorías y subcategorías
         $('#categoriaSelect').change(function () {
             var categoriaId = $(this).val();
             var subcategoriaSelect = $('#subcategoriaSelect');
 
-        subcategoriaSelect.empty().append('<option value="">Seleccione una opción</option>');
+            subcategoriaSelect.empty().append('<option value="">Seleccione una opción</option>');
 
-        if (categoriaId) {
-            $.get('/Dashboard/ObtenerSubcategorias', { categoriaId: categoriaId }, function (data) {
+            if (categoriaId) {
+                $.get('/Dashboard/ObtenerSubcategorias', { categoriaId: categoriaId }, function (data) {
                     $.each(data, function (index, item) {
-                    subcategoriaSelect.append($('<option>', {
-                        value: item.id,
-                        text: item.nombre
+                        subcategoriaSelect.append($('<option>', {
+                            value: item.id,
+                            text: item.nombre
                         }));
+                    });
                 });
-            });
             }
         });
+
+        // Cambiar clases de etiquetas de estado
+        $(".estadocontainer").each(function () {
+            var estadoTexto = $(this).text().trim(); // Obtener el texto dentro del elemento
+
+            if (estadoTexto === 'Denegado') {
+                $(this).attr("class", "badge bg-danger text-white estadocontainer");
+            } else if (estadoTexto === 'Tramitado') {
+                $(this).attr("class", "badge bg-success text-white estadocontainer");
+            } else if (estadoTexto === 'Observado') {
+                $(this).attr("class", "badge bg-primary text-white estadocontainer");
+            } else if (estadoTexto === 'Pendiente') {
+                $(this).attr("class", "badge bg-warning text-dark estadocontainer");
+            }
+        });
+
+        // Objeto para almacenar los filtros seleccionados
+        let filtros = {
+            busqueda: '',
+            estado: 'todos',
+            tipo: 'todos',
+            fechaInicio: '',
+            fechaFin: ''
+        };
+
+        // Manejar clics en opciones de dropdown para filtros
+        $('.dropdown-item').on('click', function (e) {
+            e.preventDefault();
+
+            const $this = $(this);
+            const $button = $this.closest('.input-group').find('.dropdown-toggle');
+            const filterType = $button.data('filter-type');
+            const value = $this.data('value');
+            const text = $this.text();
+
+            // Actualizar texto del botón con ícono
+            $button.html(`
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" />
+                </svg>
+                ${filterType.charAt(0).toUpperCase() + filterType.slice(1)}: ${text}
+            `);
+
+            // Guardar valor seleccionado
+            filtros[filterType] = value;
+
+            // Aplicar los filtros
+            aplicarFiltros();
+        });
+
+        // Manejar cambios en el input de búsqueda
+        $('#searchInput').on('input', function () {
+            filtros.busqueda = $(this).val().toLowerCase();
+
+            // Aplicar filtros después de un pequeño retraso para evitar múltiples búsquedas mientras se escribe
+            clearTimeout(this.timeoutId);
+            this.timeoutId = setTimeout(function () {
+                aplicarFiltros();
+            }, 300);
+        });
+
+        // Manejar cambios en las fechas
+        $('#fechaInicio, #fechaFin').on('change', function () {
+            const id = $(this).attr('id');
+            filtros[id === 'fechaInicio' ? 'fechaInicio' : 'fechaFin'] = $(this).val();
+            aplicarFiltros();
+        });
+
+        // Función para aplicar filtros a la tabla
+        function aplicarFiltros() {
+            // Recorrer todas las filas de la tabla
+            $('table tbody tr').each(function () {
+                let mostrarFila = true;
+                const $fila = $(this);
+
+                // Filtrar por texto de búsqueda (ID o nombre)
+                if (filtros.busqueda) {
+                    const id = $fila.find('td:eq(0)').text().toLowerCase();
+                    const nombre = $fila.find('td:eq(1)').text().toLowerCase();
+                    if (!id.includes(filtros.busqueda) && !nombre.includes(filtros.busqueda)) {
+                        mostrarFila = false;
+                    }
+                }
+
+                // Filtrar por estado
+                if (filtros.estado !== 'todos') {
+                    const estado = $fila.find('td:eq(5) .estadocontainer').text().toLowerCase();
+                    if (estado !== filtros.estado.toLowerCase()) {
+                        mostrarFila = false;
+                    }
+                }
+
+                // Filtrar por tipo
+                if (filtros.tipo !== 'todos') {
+                    const tipo = $fila.find('td:eq(2)').text().toLowerCase();
+                    if (tipo !== filtros.tipo.toLowerCase()) {
+                        mostrarFila = false;
+                    }
+                }
+
+                // Filtrar por fecha de creación
+                if (filtros.fechaInicio || filtros.fechaFin) {
+                    const fechaTexto = $fila.find('td:eq(3)').text(); // Formato: dd/mm/yyyy
+                    if (fechaTexto && fechaTexto !== 'Sin historial') {
+                        // Convertir formato dd/mm/yyyy a objeto Date
+                        const partes = fechaTexto.split('/');
+                        const fecha = new Date(partes[2], partes[1] - 1, partes[0]); // año, mes (0-11), día
+
+                        if (filtros.fechaInicio) {
+                            const fechaInicio = new Date(filtros.fechaInicio);
+                            if (fecha < fechaInicio) {
+                                mostrarFila = false;
+                            }
+                        }
+
+                        if (filtros.fechaFin) {
+                            const fechaFin = new Date(filtros.fechaFin);
+                            fechaFin.setHours(23, 59, 59); // Final del día
+                            if (fecha > fechaFin) {
+                                mostrarFila = false;
+                            }
+                        }
+                    }
+                }
+
+                // Mostrar u ocultar la fila según el resultado de los filtros
+                $fila.toggle(mostrarFila);
+            });
+
+            // Actualizar mensaje si no hay resultados
+            if ($('table tbody tr:visible').length === 0) {
+                if ($('table tbody tr.no-results').length === 0) {
+                    $('table tbody').append('<tr class="no-results"><td colspan="7" class="text-center py-3">No se encontraron resultados</td></tr>');
+                }
+            } else {
+                $('table tbody tr.no-results').remove();
+            }
+        }
     });
+
+
+
 </script>

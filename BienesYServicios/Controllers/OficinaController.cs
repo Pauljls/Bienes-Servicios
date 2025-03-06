@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using X.PagedList;
+using X.PagedList.Extensions;
+using X.PagedList.Mvc.Core;
+
 
 namespace BienesYServicios.Controllers
 {
@@ -19,33 +23,17 @@ namespace BienesYServicios.Controllers
             _logger = logger;
         }
 
-        // GET: OficinaController
-        [Authorize(Roles = "Usuario")]
-        public async Task<ActionResult> Index()
+
+        //[Authorize(Roles = "Administrador")]
+        public  ActionResult ControlOficinas(int? page)
         {
             try
             {
-
-                var oficinas = await _context.Oficinas.ToListAsync();
-                ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
-                ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
-                ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                return View(oficinas);
-            }
-            catch (Exception ex) {
-                return BadRequest(new { Error = ex.Message});
-            }
-            
-        }
-
-        [Authorize(Roles = "Administrador")]
-        public async Task<ActionResult> ControlOficinas()
-        {
-            try
-            {
-                var oficinas = await _context.Oficinas
+                int pageSize = 6;
+                int pageNumber = (page ?? 1);
+                var oficinas = _context.Oficinas
                     .Include(o => o.Usuarios)
-                    .ToListAsync();
+                    .ToPagedList(pageNumber,pageSize);
                 ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
                 ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
                 ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -62,13 +50,6 @@ namespace BienesYServicios.Controllers
         {
             return View();
         }
-
-        // GET: OficinaController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
         // POST: OficinaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

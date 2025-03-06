@@ -20,14 +20,7 @@ namespace BienesYServicios.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = "Usuario")]
-        // GET: TipoRequerimientoController
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         // GET: TipoRequerimientoController
         public async Task<ActionResult> ControlCategoria()
         {

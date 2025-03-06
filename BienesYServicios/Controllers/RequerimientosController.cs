@@ -77,46 +77,35 @@ namespace BienesYServicios.Controllers
             }
         }
 
-        // GET: RequerimientosController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: RequerimientosController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: RequerimientosController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
         // POST: RequerimientosController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var requerimiento = await _context.Requerimientos
+                    .FirstOrDefaultAsync(r => r.Id == id);
+
+                if (requerimiento == null)
+                {
+                    return NotFound(); 
+                }
+
+                _context.Requerimientos.Remove(requerimiento); 
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("AdminPanel","Dashboard");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                // Registra el error en la consola o en un logger
+                Console.WriteLine($"Error eliminando requerimiento: {ex.Message}");
+
+                // Retorna una vista con un mensaje de error (opcional)
+                return View("Error", new { message = "No se pudo eliminar el requerimiento" });
             }
         }
+
     }
 }

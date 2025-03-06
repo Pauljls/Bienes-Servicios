@@ -14,15 +14,57 @@
     <nav class="col-md-3 col-lg-2 d-md-block sidebar bg-dark text-white">
         <div class="text-center py-4">
             <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
-            <button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#RequerimientoModal">+ Crear Requerimiento</button>
+            <button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#RequerimientoModal">
+                + Crear Requerimiento
+            </button>
         </div>
         <ul class="nav flex-column">
-            <li class="nav-item"><a href="@Url.Action("AdminPanel","Dashboard")" class="nav-link text-white">📌 Requerimientos</a></li>
-            <li class="nav-item"><a href="@Url.Action("ControlCategoria","TipoRequerimiento")" class="nav-link text-white">📂 Tipos de Requerimiento</a></li>
-            <li class="nav-item"><a href="@Url.Action("ControlOficinas","Oficina")" class="nav-link text-white">🏢 Oficinas</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-white">🔔 Notificaciones</a></li>
+            <li class="nav-item">
+                <a href="@Url.Action("AdminPanel","Dashboard")" class="nav-link text-white active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+                    </svg>
+                    Requerimientos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@Url.Action("ControlCategoria","TipoRequerimiento")" class="nav-link text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-paper" viewBox="0 0 16 16">
+                        <path d="M4 0a2 2 0 0 0-2 2v1.133l-.941.502A2 2 0 0 0 0 5.4V14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5.4a2 2 0 0 0-1.059-1.765L14 3.133V2a2 2 0 0 0-2-2zm10 4.267.47.25A1 1 0 0 1 15 5.4v.817l-1 .6zm-1 3.15-3.75 2.25L8 8.917l-1.25.75L3 7.417V2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1zm-11-.6-1-.6V5.4a1 1 0 0 1 .53-.882L2 4.267zm13 .566v5.734l-4.778-2.867zm-.035 6.88A1 1 0 0 1 14 15H2a1 1 0 0 1-.965-.738L8 10.083zM1 13.116V7.383l4.778 2.867L1 13.117Z" />
+                    </svg>
+                    Tipos de Requerimiento
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@Url.Action("ControlOficinas","Oficina")" class="nav-link text-white ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+                        <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z" />
+                        <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z" />
+                    </svg>
+                    Oficinas
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
+                    </svg>
+
+                    Notificaciones
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="@Url.Action("Logout", "Login")" class="nav-link text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
+                        <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
+                    </svg>
+                    Cerrar Sesion
+                </a>
+            </li>
         </ul>
     </nav>
+
     
 
     <!-- Contenido de la Vista -->
@@ -34,11 +76,13 @@
             <div class="row text-center mb-3 fw-bold">
                 <div class="col">NOMBRE DEL REQUERIMIENTO</div>
                 <div class="col">TIPO</div>
+                <div class="col">DESCRIPCION</div>
                 <div class="col">FECHA DE CREACIÓN</div>
             </div>
             <div class="row text-center border-top pt-2">
                 <div class="col">@Model?.Nombre</div>
                 <div class="col">@Model?.SubCategoriaRequerimiento?.Nombre</div>
+                <div class="col">@Model?.Descripcion</div>
                 <div class="col">@primerHistorial?.FechaModificacion.ToString("dd/MM/yy")</div>
             </div>
 
@@ -51,7 +95,7 @@
                 <div class="col">@Model?.HistorialRequerimientos?.FirstOrDefault()?.IdUsuarioNavigation?.Nombre
                     @Model?.HistorialRequerimientos?.FirstOrDefault()?.IdUsuarioNavigation?.Apellidos</div>
                 <div class="col">
-                    <span class="badge bg-warning text-dark">@Model?.HistorialRequerimientos?.LastOrDefault()?.IdEstadoNavigation.Nombre</span>
+                    <span class="badge bg-warning text-dark" id="estadocontainer">@Model?.HistorialRequerimientos?.LastOrDefault()?.IdEstadoNavigation.Nombre</span>
                 </div>
             </div>
 
@@ -117,70 +161,85 @@
                 </div>
             }
 
-            <h4 class="mt-5 text-center">
-                Editar Estado
-            </h4>
 
-            <h5 class="mt-1 text-center">
-                Presione cualquier boton para editar el estado
-            </h5>
+            <div class="container mt-5">
+                <div class="row">
+                    <!-- Estado del Trámite -->
+                    <div class="col-md-6">
+                        <div class="card shadow-lg p-4">
+                            <h4 class="text-center fw-bold">Editar Estado</h4>
+                            <p class="text-center text-muted">Presione cualquier botón para editar el estado</p>
+                            <form id="formHistorial" class="text-center">
+                                <input type="hidden" name="IdRequerimiento" value="@Model?.Id" />
 
-            <!-- Estado del Trámite -->
+                                <div class="d-flex justify-content-center gap-3 mt-3">
+                                    <button type="button" id="Tramitado" class="btn btn-success shadow-sm px-4 py-2"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        ✅ Tramitado
+                                    </button>
+                                    <button id="Denegado" type="button" class="btn btn-danger shadow-sm px-4 py-2"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        ❌ Denegado
+                                    </button>
+                                    <button type="button" id="Observado" class="btn btn-primary shadow-sm px-4 py-2"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        📩 Observado
+                                    </button>
+                                </div>
+                            </form>
 
-            <form id="formHistorial">
-                <div class="text-center my-4 gap-3">
-                    <input type="number" hidden name="IdRequerimiento" value="@Model?.Id" />
-
-                    <button  type="button" id="Tramitado" class="badge btn bg-success px-3 py-2 fs-6"   
-                            data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z" />
-                        </svg>
-                        Tramitado
-                    </button>
-                    <button id="Denegado" type="button" class="badge btn bg-danger px-3 py-2 fs-6 text-white"  data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass-bottom" viewBox="0 0 16 16">
-                            <path d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5m2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702s.18.149.5.149.5-.15.5-.15v-.7c0-.701.478-1.236 1.011-1.492A3.5 3.5 0 0 0 11.5 3V2z" />
-                        </svg>
-                        Denegado
-                    </button>
-                    <button type="button" id="Observado" class="badge btn btn-primary px-3 py-2 fs-6" 
-                            data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
-                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
-                        </svg>
-                        Observado
-                    </button>
-                </div>
-            </form>
-
-            <!-- Niveles del Trámite -->
-            <div class="row text-center mt-4">
-                <div class="col">
-                    <span class="badge bg-primary p-2">DGA</span><br>Primer Nivel
-                </div>
-                <div class="col">
-                    <span class="badge bg-primary p-2">Abastecimiento</span><br>Segundo Nivel
-                </div>
-                <div class="col">
-                    <span class="badge bg-primary p-2">Especialista</span><br>Tercer Nivel
-                </div>
-                <div class="col">
-                    <span class="badge bg-primary p-2">Cotizaciones</span><br>Cuarto Nivel
-                </div>
-            </div>
-
-            <!-- Presupuesto -->
-            <div class="row mt-5">
-                <div class="col text-center">
-                    <h5 class="fw-bold text-success">💰 Presupuesto</h5>
-                    <div class="card shadow-sm p-3">
-                        <p class="mb-1">Valor Referencial: <strong class="text-primary">$</strong></p>
-                        <p class="mb-0">Divisa: <strong class="text-success"></strong></p>
+                            <!-- Presupuesto -->
+                            <div class="text-center mt-4">
+                                <h5 class="fw-bold text-success">💰 Presupuesto</h5>
+                                <div class="card shadow-sm p-3">
+                                    <p class="mb-1">Valor Referencial: <strong class="text-primary">$</strong></p>
+                                    <p class="mb-0">Divisa: <strong class="text-success"></strong></p>
+                                </div>
+                                <button type="button" class="btn btn-outline-success mt-3">Agregar Presupuesto</button>
+                            </div>
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-success my-5">Agregar Presupuesto</button>
+
+                    <!-- Historial de cambios -->
+                    <div class="col-md-6">
+                        <div class="card shadow-lg p-4">
+                            <h5 class="fw-bold text-success text-center">
+                                📜 Historial de Cambios
+                            </h5>
+                            <div class="table-responsive mt-3">
+                                @if (Model?.HistorialRequerimientos is not null)
+                                {
+                                    <table class="table table-bordered table-striped shadow-sm">
+                                        <thead class="table-dark text-center">
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Usuario</th>
+                                                <th>Oficina</th>
+                                                <th>Estado</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center">
+                                            @foreach (var modificacion in Model.HistorialRequerimientos)
+                                            {
+                                                <tr>
+                                                    <td>@modificacion.FechaModificacion.ToString("dd/MM/yy")</td>
+                                                    <td>@modificacion.IdUsuarioNavigation.Nombre, @modificacion.IdUsuarioNavigation.Apellidos</td>
+                                                    <td>@modificacion.IdUsuarioNavigation.Oficina.Nombre</td>
+                                                    <td>@modificacion.IdEstadoNavigation.Nombre</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }else{
+                                    <div class="alert alert-warning" role="alert">
+                                       No existen cambios actualmente
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -191,15 +250,19 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Alerta</h1>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z" />
+                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                </svg>
+                <h1 class="modal-title fs-5 px-3" id="exampleModalLabel">Alerta</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Esta seguro que quiere realizar esta accion
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="historial()">Continuar</button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" onclick="historial()">Continuar</button>
             </div>
         </div>
     </div>
@@ -232,7 +295,12 @@
             else if (this.id === "Tramitado") selectedEstadoId = 3;
             else if (this.id === "Observado") selectedEstadoId = 2;
         });
-    });
+
+        if ($("#estadocontainer").text() === 'Denegado') $("#estadocontainer").attr("class", "badge bg-danger text-whitebadge bg-danger text-white");
+        else if ($("#estadocontainer").text() === 'Tramitado') $("#estadocontainer").attr("class", "badge bg-success text-whitebadge bg-success text-white");
+        else if ($("#estadocontainer").text() === 'Observado') $("#estadocontainer").attr("class", "badge bg-primary text-whitebadge bg-primary text-white");
+            
+        });
 
 
     function historial() {

@@ -1,113 +1,129 @@
-﻿@model List<BienesYServicios.Models.Oficina>
+﻿@{
 
-<div class="row">
-    <!-- Sidebar -->
-    <nav class="col-md-3 col-lg-2 d-md-block sidebar bg-dark text-white">
-        <div class="text-center py-4">
-            <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
-            <button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#RequerimientoModal">+ Crear Requerimiento</button>
-        </div>
-        <ul class="nav flex-column">
-            <li class="nav-item"><a href="@Url.Action("AdminPanel","Dashboard")" class="nav-link text-white">📌 Requerimientos</a></li>
-            <li class="nav-item"><a href="@Url.Action("ControlCategoria","TipoRequerimiento")" class="nav-link text-white">📂 Tipos de Requerimiento</a></li>
-            <li class="nav-item"><a href="@Url.Action("ControlOficinas","Oficina")" class="nav-link text-white">🏢 Oficinas</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-white">🔔 Notificaciones</a></li>
-        </ul>
-    </nav>
+}
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<BienesYServicios.Models.Oficina>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar bg-dark text-white">
+            <div class="text-center py-4">
+                <img src="~/images/Logo.png" alt="Logo" class="img-fluid mb-3">
+                <button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#RequerimientoModal">
+                    + Crear Requerimiento
+                </button>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a href="@Url.Action("AdminPanel","Dashboard")" class="nav-link text-white ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+                        </svg>
+                        Requerimientos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("ControlCategoria","TipoRequerimiento")" class="nav-link text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-paper" viewBox="0 0 16 16">
+                            <path d="M4 0a2 2 0 0 0-2 2v1.133l-.941.502A2 2 0 0 0 0 5.4V14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5.4a2 2 0 0 0-1.059-1.765L14 3.133V2a2 2 0 0 0-2-2zm10 4.267.47.25A1 1 0 0 1 15 5.4v.817l-1 .6zm-1 3.15-3.75 2.25L8 8.917l-1.25.75L3 7.417V2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1zm-11-.6-1-.6V5.4a1 1 0 0 1 .53-.882L2 4.267zm13 .566v5.734l-4.778-2.867zm-.035 6.88A1 1 0 0 1 14 15H2a1 1 0 0 1-.965-.738L8 10.083zM1 13.116V7.383l4.778 2.867L1 13.117Z" />
+                        </svg>
+                        Tipos de Requerimiento
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("ControlOficinas","Oficina")" class="nav-link text-white active ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+                            <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z" />
+                            <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z" />
+                        </svg>
+                        Oficinas
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
+                        </svg>
 
-    <!-- Main Content -->
-    <main class="col-md-9 col-lg-10 px-4">
-        <!-- Header -->
-        <div class="header mb-4">
-            <div class="d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">Oficinas</h4>
-                <div class="user-info">
-                    Bienvenido(a), Administrador, @ViewBag.nombre @ViewBag.apellidos
-                </div>
+                        Notificaciones
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Logout", "Login")" class="nav-link text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
+                            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
+                        </svg>
+                        Cerrar Sesion
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between align-items-center py-3">
+                <h4 class="fw-bold">Oficinas</h4>
+                <span>Bienvenido(a), Administrador, @ViewBag.nombre @ViewBag.apellidos</span>
+            </div>
+
+            <div class="content-wrapper container-fluid">
+                @if (Model != null && Model.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Participantes</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var oficina in Model)
+                                {
+                                    <tr>
+                                        <td>@oficina.Id</td>
+                                        <td>@oficina.Nombre</td>
+                                        <td>@oficina.Usuarios.Count</td>
+                                        <td>
+                                            <a href="@Url.Action("DetalleOficina", "Oficina", new { id = oficina.Id })" class="btn btn-primary btn-sm">Ver</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <!-- Paginación alineada a la derecha -->
+                    <div class="d-flex justify-content-end mt-3">
+                        @Html.PagedListPager(Model, page => Url.Action("AdminPanel", new { page }),
+                                 new PagedListRenderOptions
+                    {
+                        LiElementClasses = new[] { "page-item" },
+                        PageClasses = new[] { "page-link" }
+                    })
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning" role="alert">
+                        No hay oficinas registradas actualmente.
+                    </div>
+                }
             </div>
         </div>
-
-        <!-- Content -->
-        <div class="content-wrapper">
-            @if (Model != null && Model.Any())
-            {
-                <div class="table-container">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Participantes</th>
-                                <th scope="col">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var oficina in Model)
-                            {
-                                <tr>
-                                    <td>@oficina.Id</td>
-                                    <td>@oficina.Nombre</td>
-                                    <td>@oficina.Usuarios.Count</td>
-                                    <td>
-                                        <a href="@Url.Action("DetalleOficina", "Oficina", new { id = oficina.Id })"
-                                           class="btn btn-view">
-                                            Ver
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                @if (ViewBag.TotalPages > 1)
-                {
-                    <nav aria-label="Navegación de páginas" class="mt-4">
-                        <ul class="pagination justify-content-end">
-                            @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                            {
-                                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                                    <a class="page-link" href="@Url.Action("ControlOficinas", "Oficina", new { page = i })">
-                                        @i
-                                    </a>
-                                </li>
-                            }
-                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" href="@Url.Action("ControlOficinas", "Oficina", new { page = ViewBag.CurrentPage + 1 })">
-                                        Siguiente
-                                    </a>
-                                </li>
-                            }
-                        </ul>
-                    </nav>
-                }
-            }
-            else
-            {
-                <div class="alert alert-warning" role="alert">
-                    No hay oficinas registradas actualmente
-                </div>
-            }
-        </div>
-    </main>
+    </div>
 </div>
 
+
 <style>
-
-
     html, body {
         height: 100%;
         margin: 0;
         padding: 0;
-    }
-
-    .container-fluid {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
     }
 
     .sidebar {
@@ -121,4 +137,30 @@
         display: block;
     }
 
+    .sidebar .nav-link {
+        color: white;
+        padding: 10px;
+        display: block;
+        transition: background 0.3s ease-in-out;
+    }
+
+        .sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .sidebar .nav-link.active {
+            background: rgba(0, 123, 255, 0.5); /* Color más destacado para la opción activa */
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+
+
+    .table-responsive {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 </style>

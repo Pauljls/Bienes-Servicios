@@ -43,15 +43,7 @@ namespace BienesYServicios.Controllers
                 // Verificar si el usuario está autenticado
                 if (User.Identity.IsAuthenticated)
                 {
-                    var userRole = User.FindFirstValue(ClaimTypes.Role);
-                    if (userRole == "Administrador")
-                    {
-                        return RedirectToAction("AdminPanel", "Dashboard");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Dashboard");
-                    }
+                    return RedirectToAction("AdminPanel", "Dashboard");
                 }
 
                 // Si no está autenticado, mostrar la vista de login
@@ -78,7 +70,7 @@ namespace BienesYServicios.Controllers
 
                 if (user == null)
                 {
-                    return RedirectToAction("Index", "Login"); // ✅ Redirige en lugar de devolver BadRequest
+                    return RedirectToAction("Index", "Login"); //  Redirige en lugar de devolver BadRequest
                 }
 
                 if (!BCrypt.Net.BCrypt.Verify(usuario.contraseña, user.Contrasena))
@@ -94,19 +86,14 @@ namespace BienesYServicios.Controllers
                 var cookieOptions = new CookieOptions()
                 {
                     HttpOnly = true,
-                    Secure = !isDevelopment,  // ✅ Usa Secure=true solo en producción
-                    Expires = DateTime.UtcNow.AddMinutes(15),  // ✅ Sincroniza con la expiración del token
+                    Secure = !isDevelopment,  //  Usa Secure=true solo en producción
+                    Expires = DateTime.UtcNow.AddMinutes(15),  //  Sincroniza con la expiración del token
                     SameSite = SameSiteMode.Strict
                 };
 
                 Response.Cookies.Append("SesionId", token, cookieOptions);
 
-                if (user.RolUsuario.Nombre == "Administrador")
-                {
-                    return RedirectToAction("AdminPanel", "Dashboard");
-                }
-
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("AdminPanel", "Dashboard");
             }
             catch (Exception ex)
             {
@@ -114,6 +101,15 @@ namespace BienesYServicios.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            // Eliminar la cookie del token JWT
+            Response.Cookies.Delete("SesionId");
+
+            // Redirigir al usuario a la página de login
+            return RedirectToAction("Index");
+        }
 
 
         [HttpPost]

@@ -27,45 +27,7 @@ namespace BienesYServicios.Controllers
             _context = context;
         }
         
-        [Authorize(Roles = "Usuario")]
-        // GET: DashboardController
-        public async Task<IActionResult> Index(int? page)
-        {
-            var token = Request.Cookies["SesionId"]; //  Obtener la cookie
-
-            if (!string.IsNullOrEmpty(token))
-            {
-                //  Extraer información del usuario desde Claims
-                ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
-                ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
-                ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                ViewBag.categorias = new SelectList(await _context.CategoriasRequerimientos.ToListAsync(), "Id", "Nombre");
-                ViewBag.subcategoria = new SelectList(
-                await _context.SubcategoriaRequerimientos.ToListAsync(), "Id", "Nombre");
-                int pageSize = 6;
-                int pageNumber = (page ?? 1);
-                var requerimientos = _context.Requerimientos
-                    .Include(r => r.SubCategoriaRequerimiento)
-                        .ThenInclude(s => s.Categoria)
-                    .Include(r => r.HistorialRequerimientos)
-                        .ThenInclude(h => h.IdUsuarioNavigation)
-                    .Include(r => r.HistorialRequerimientos)
-                        .ThenInclude(h => h.IdEstadoNavigation)
-                    .OrderBy(r => r.Id)
-                    .ToPagedList(pageNumber, pageSize);
-
-                return View("usuario",requerimientos); //  Mostrar vista del usuario
-            }
-            else
-            {
-                //  Forzar cierre de sesión y redirección si no hay cookie
-                await HttpContext.SignOutAsync();
-                return RedirectToAction("Index", "Login");
-            }
-        }
-
-
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
        
         public async Task<ActionResult> AdminPanel(int? page) {
 
@@ -73,6 +35,7 @@ namespace BienesYServicios.Controllers
             ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
             ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             ViewBag.categorias = new SelectList(await _context.CategoriasRequerimientos.ToListAsync(), "Id","Nombre");
+            ViewBag.Rol = User.FindFirst(ClaimTypes.Role)?.Value;
             ViewBag.subcategoria = new SelectList(
             await _context.SubcategoriaRequerimientos.ToListAsync(),"Id","Nombre");
             int pageSize = 6;
