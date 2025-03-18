@@ -77,9 +77,7 @@ namespace BienesYServicios.Controllers
             }
         }
 
-        // POST: RequerimientosController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
             try
@@ -89,23 +87,29 @@ namespace BienesYServicios.Controllers
 
                 if (requerimiento == null)
                 {
-                    return NotFound(); 
+                    return NotFound();
                 }
 
-                _context.Requerimientos.Remove(requerimiento); 
+                // Eliminar registros relacionados en HistorialRequerimiento
+                var historial = _context.HistorialRequerimientos
+                    .Where(h => h.IdRequerimiento == id);
+
+                _context.HistorialRequerimientos.RemoveRange(historial);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("AdminPanel","Dashboard");
+                // Ahora eliminar el Requerimiento
+                _context.Requerimientos.Remove(requerimiento);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Requerimiento eliminado con éxito" });
             }
             catch (Exception ex)
             {
-                // Registra el error en la consola o en un logger
                 Console.WriteLine($"Error eliminando requerimiento: {ex.Message}");
-
-                // Retorna una vista con un mensaje de error (opcional)
-                return View("Error", new { message = "No se pudo eliminar el requerimiento" });
+                return BadRequest(new { message = "No se pudo eliminar el requerimiento" });
             }
         }
+
 
     }
 }

@@ -37,6 +37,7 @@ namespace BienesYServicios.Controllers
                 ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
                 ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
                 ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                ViewBag.Rol = User.FindFirst(ClaimTypes.Role)?.Value;
                 return View("ControlOficinas",oficinas);
             }
             catch (Exception ex)

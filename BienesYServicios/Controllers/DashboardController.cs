@@ -38,7 +38,7 @@ namespace BienesYServicios.Controllers
             ViewBag.Rol = User.FindFirst(ClaimTypes.Role)?.Value;
             ViewBag.subcategoria = new SelectList(
             await _context.SubcategoriaRequerimientos.ToListAsync(),"Id","Nombre");
-            int pageSize = 6;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             var requerimientos = _context.Requerimientos
                 .Include(r => r.SubCategoriaRequerimiento)

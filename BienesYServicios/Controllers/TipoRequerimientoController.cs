@@ -25,11 +25,12 @@ namespace BienesYServicios.Controllers
         public async Task<ActionResult> ControlCategoria()
         {
             ViewBag.nombre = User.FindFirst(ClaimTypes.Name)?.Value;
+            ViewBag.Rol = User.FindFirst(ClaimTypes.Role)?.Value;
             ViewBag.apellidos = User.FindFirst(ClaimTypes.Surname)?.Value;
             ViewBag.id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             ViewBag.categorias = new SelectList(await _context.CategoriasRequerimientos.ToListAsync(),"Id", "Nombre");
-            
             var subcat = await _context.SubcategoriaRequerimientos.ToListAsync();
+
             return View("ControlCategoria",subcat);
         }
 
