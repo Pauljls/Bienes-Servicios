@@ -34,12 +34,6 @@
                             <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z" />
                         </svg>
                     Oficinas</a></li>
-                <li class="nav-item"><a href="#" class="nav-link text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
-                        </svg>
-
-                    Notificaciones</a></li>
                 <li class="nav-item"><a href="@Url.Action("Logout", "Login")" class="nav-link text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
@@ -523,31 +517,43 @@
 
 
 
-    const ObtenerId = async (id) => {
-        idrequerimiento = id;
-        console.log(id);
-        let btn = document.getElementById("confirmarEliminar");
-        btn.addEventListener("click", async () => {
-            try {
-                const response = await fetch(`/Requerimientos/Delete/${id}`, {
-                    method: "DELETE",
-                });
+let idrequerimiento;
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error("Error:", errorData.message);
-                    alert("No se pudo eliminar el requerimiento.");
-                } else {
-                    console.log("Requerimiento eliminado con éxito");
-                    alert("Requerimiento eliminado con éxito");
-                    location.reload();
-                }
-            } catch (error) {
-                console.log("Algo salió mal", error);
-                alert("Hubo un error en la petición.");
+const ObtenerId = (id) => {
+    idrequerimiento = id;
+    console.log("Selected ID for deletion:", id);
+    
+    // Get the confirm button
+    let btn = document.getElementById("confirmarEliminar");
+    
+    // Remove any existing event listeners to prevent multiple deletions
+    btn.replaceWith(btn.cloneNode(true));
+    
+    // Get the fresh button reference after replacing
+    btn = document.getElementById("confirmarEliminar");
+    
+    // Add a new event listener
+    btn.addEventListener("click", async () => {
+        try {
+            const response = await fetch(`/Requerimientos/Delete/${idrequerimiento}`, {
+                method: "DELETE",
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error:", errorData.message);
+                alert("No se pudo eliminar el requerimiento.");
+            } else {
+                console.log("Requerimiento eliminado con éxito");
+                alert("Requerimiento eliminado con éxito");
+                location.reload();
             }
-        });
-    };
+        } catch (error) {
+            console.log("Algo salió mal", error);
+            alert("Hubo un error en la petición.");
+        }
+    });
+};
 
 
 
